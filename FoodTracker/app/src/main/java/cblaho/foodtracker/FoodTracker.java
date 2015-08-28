@@ -1,17 +1,22 @@
 package cblaho.foodtracker;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 
-public class FoodTracker extends ActionBarActivity {
+public class FoodTracker extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_tracker);
+        NavDrawerItem[] navDrawerItems = new NavDrawerItem[4];
+        NavDrawerItem yourRecipe = new NavDrawerItem(0, "Your Recipes");
+        ListView mDrawerList = (ListView) findViewById(R.id.navigation_list);
+        mDrawerList.setAdapter(new NavAdapter(this, R.layout.navrow, navDrawerItems));
     }
 
     @Override
