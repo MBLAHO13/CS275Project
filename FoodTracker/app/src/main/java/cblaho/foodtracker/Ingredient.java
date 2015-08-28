@@ -1,5 +1,9 @@
 package cblaho.foodtracker;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import java.util.Map;
 
 /**
@@ -10,9 +14,13 @@ public class Ingredient {
     String name;
     String group;
     int quantity;
+    //map name of nutrient to nutrient tuple of unit:amount
     Map<String, Nutrient> nutrients;
+    //map name of conversion to grams, eg. cup:12.0[g], slice:1.0[g]
+    Map<String, Double> conversion;
 
     public Ingredient(String id, Map<String, Double> conversion, String name, int quantity, String group, Map<String, Nutrient> nutrients) {
+        //manual constructor, you probably shouldn't use this outright.
         this.id = id;
         this.conversion = conversion;
         this.name = name;
@@ -21,7 +29,28 @@ public class Ingredient {
         this.nutrients = nutrients;
     }
 
-    Map<String, Double> conversion;
+    public Ingredient(JsonObject response){
+        // at this point we've already packaged the JSON reponse into a GSON-comaptible object.
+        //this method takes a json object, and returns a full ingredient object
+
+        JsonArray rawConversions = response.getAsJsonArray("conversions");
+
+        for (int i =0; i< rawConversions.size(); i++){
+            JsonElement oneConversion = rawConversions.get(i);
+
+        }
+
+        JsonObject rawNutrients = response.getAsJsonObject("nutrients");
+        this.name = response.get("name").getAsString();
+        this.group = response.get("group_name").getAsString();
+        this.id = response.get("id").getAsString();
+        this.quantity = 0;
+
+
+
+    }
+
+
 
     public String getId() {
         return id;

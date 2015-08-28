@@ -1,5 +1,7 @@
 package cblaho.foodtracker;
 
+import com.google.gson.JsonElement;
+
 /**
  * Created by cblaho on 8/27/15.
  */
@@ -28,5 +30,8 @@ public class Nutrient {
         this.quantity = quantity;
     }
 
+    public Nutrient(JsonElement tuple){
+        return;
+    }
 
 }
