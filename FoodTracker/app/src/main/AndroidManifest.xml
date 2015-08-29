@@ -20,6 +20,18 @@
             android:name=".navigationActivity"
             android:label="@string/title_activity_navigation" >
         </activity>
+        <activity
+            android:name=".RecipeList"
+            android:label="@string/title_activity_recipe_list" >
+        </activity>
+        <activity
+            android:name=".RecipeView"
+            android:label="@string/title_activity_recipe_view" >
+        </activity>
+        <activity
+            android:name=".RecipeAdd"
+            android:label="@string/title_activity_recipe_add" >
+        </activity>
     </application>
 
 </manifest>
