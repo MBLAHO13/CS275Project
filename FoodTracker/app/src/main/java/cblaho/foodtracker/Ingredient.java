@@ -7,21 +7,23 @@ import com.google.gson.JsonObject;
 import java.util.Map;
 
 /**
- * Created by cblaho on 8/26/15.
+ * Created by cblaho and mmatteson 8/29/15.
  */
-public class Ingredient {
+public class Ingredient implements Food {
     String id;
     String name;
     String group;
-    int quantity;
+    Double quantity;
+    String conversion;
     //map name of nutrient to nutrient tuple of unit:amount
-    Map<String, Nutrient> nutrients;
+    Map<String, Double> nutrients;
     //map name of conversion to grams, eg. cup:12.0[g], slice:1.0[g]
-    Map<String, Double> conversion;
+    Map<String, Double> conversions;
 
-    public Ingredient(String id, Map<String, Double> conversion, String name, int quantity, String group, Map<String, Nutrient> nutrients) {
+    public Ingredient(String id, Map<String, Double> conversions, String name, String conversion, Double quantity, String group, Map<String, Double> nutrients) {
         //manual constructor, you probably shouldn't use this outright.
         this.id = id;
+        this.conversions = conversions;
         this.conversion = conversion;
         this.name = name;
         this.quantity = quantity;
@@ -32,71 +34,75 @@ public class Ingredient {
     public Ingredient(JsonObject response){
         // at this point we've already packaged the JSON reponse into a GSON-comaptible object.
         //this method takes a json object, and returns a full ingredient object
-
-        JsonArray rawConversions = response.getAsJsonArray("conversions");
-
-        for (int i =0; i< rawConversions.size(); i++){
-            JsonElement oneConversion = rawConversions.get(i);
-
+        JsonArray jsonConversions = response.getAsJsonArray("conversions");
+        for(JsonElement c : jsonConversions){
+            JsonObject jsonConversion = c.getAsJsonObject();
+            this.addConversion(
+                    jsonConversion.get("unit").getAsString(),
+                    jsonConversion.get("grams").getAsDouble()
+            );
         }
-
-        JsonObject rawNutrients = response.getAsJsonObject("nutrients");
         this.name = response.get("name").getAsString();
         this.group = response.get("group_name").getAsString();
         this.id = response.get("id").getAsString();
-        this.quantity = 0;
-
-
-
+        this.quantity = 0.0;
+        JsonArray jsonNutrients = response.getAsJsonObject("nutrients").getAsJsonArray();
+        for(JsonElement n : jsonNutrients) {
+            JsonObject jsonNutrient = n.getAsJsonObject();
+            nutrients.put(
+                    jsonNutrient.get("name").getAsString(),
+                    jsonNutrient.get("val").getAsDouble()
+            );
+        }
+        this.conversion = null;
     }
 
-
-
-    public String getId() {
+    @Override
+    public String getID() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Map<String, Double> getConversion() {
-        return conversion;
-    }
-
-    public void setConversion(Map<String, Double> conversion) {
-        this.conversion = conversion;
-    }
-
-    public Map<String, Nutrient> getNutrients() {
-        return nutrients;
-    }
-
-    public void setNutrients(Map<String, Nutrient> nutrients) {
-        this.nutrients = nutrients;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getGroup() {
-        return group;
-    }
-
-    public void setGroup(String group) {
-        this.group = group;
-    }
-
+    @Override
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public Double getNutrient(String name) {
+        if(this.conversion == null) {
+            return nutrients.get(name)*quantity;
+        } else {
+            return nutrients.get(name)*quantity*conversions.get(conversion);
+        }
+    }
+
+    @Override
+    public Double getQty() {
+        return quantity;
+    }
+
+    @Override
+    public void setQty(Double qty) {
+        quantity = qty;
+    }
+
+    @Override
+    public Map<String, Double> getConversions() {
+        return conversions;
+    }
+
+    @Override
+    public String getConversion() {
+        return conversion;
+    }
+
+    @Override
+    public void setConversion(String name) {
+        conversion = name;
+    }
+
+    @Override
+    public void addConversion(String name, Double grams) {
+        conversions.put(name, grams);
     }
 }
