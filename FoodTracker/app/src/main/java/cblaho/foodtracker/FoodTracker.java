@@ -1,24 +1,28 @@
 package cblaho.foodtracker;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
 
-public class FoodTracker extends AppCompatActivity {
+public class FoodTracker extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_tracker);
-        NavDrawerItem yourRecipe = new NavDrawerItem(R.drawable.yourRecipe, "Your Recipes");
-        NavDrawerItem addRecipe = new NavDrawerItem(R.drawable.addRecipe, "Add Recipe");
-        NavDrawerItem addIngredient = new NavDrawerItem(R.drawable.addIngredient, "Add Ingredients");
+        NavDrawerItem yourRecipe = new NavDrawerItem(R.drawable.yourrecipe, "Your Recipes");
+        NavDrawerItem addRecipe = new NavDrawerItem(R.drawable.addrecipe, "Add Recipe");
+        NavDrawerItem addIngredient = new NavDrawerItem(R.drawable.addingredient, "Add Ingredient");
         NavDrawerItem[] navDrawerItems = new NavDrawerItem[]{yourRecipe, addRecipe, addIngredient};
         ListView mDrawerList = (ListView) findViewById(R.id.navigation_list);
-        mDrawerList.setAdapter(new NavAdapter(this, R.layout.navrow, navDrawerItems));
+        final NavAdapter adapter = new NavAdapter(this,R.layout.navrow, navDrawerItems);
+        if (mDrawerList == null || adapter == null){
+            System.err.print("Someone's null.");
+        }
+        mDrawerList.setAdapter(adapter);
     }
 
     @Override
