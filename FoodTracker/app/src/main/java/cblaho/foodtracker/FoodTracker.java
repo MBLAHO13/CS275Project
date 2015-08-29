@@ -13,8 +13,10 @@ public class FoodTracker extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_tracker);
-        NavDrawerItem[] navDrawerItems = new NavDrawerItem[4];
-        NavDrawerItem yourRecipe = new NavDrawerItem(0, "Your Recipes");
+        NavDrawerItem yourRecipe = new NavDrawerItem(R.drawable.yourRecipe, "Your Recipes");
+        NavDrawerItem addRecipe = new NavDrawerItem(R.drawable.addRecipe, "Add Recipe");
+        NavDrawerItem addIngredient = new NavDrawerItem(R.drawable.addIngredient, "Add Ingredients");
+        NavDrawerItem[] navDrawerItems = new NavDrawerItem[]{yourRecipe, addRecipe, addIngredient};
         ListView mDrawerList = (ListView) findViewById(R.id.navigation_list);
         mDrawerList.setAdapter(new NavAdapter(this, R.layout.navrow, navDrawerItems));
     }
