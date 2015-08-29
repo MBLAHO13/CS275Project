@@ -10,7 +10,7 @@ public interface Food {
     String getName();
     Double getNutrient(String name);
     Double getQty();
-    void setQty(Double qty                                       );
+    void setQty(Double qty);
     Map<String, Double> getConversions();
     String getConversion();
     void setConversion(String name);
