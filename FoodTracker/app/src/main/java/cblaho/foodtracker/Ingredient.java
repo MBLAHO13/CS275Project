@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import java.util.Map;
 
 /**
- * Created by cblaho on 8/26/15.
+ * Created by cblaho and mmatteson 8/29/15.
  */
 public class Ingredient implements Food {
     String id;

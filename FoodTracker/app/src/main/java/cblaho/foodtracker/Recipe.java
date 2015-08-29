@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by cblaho on 8/26/15.
+ * Created by mmattes on 8/29/15.
  */
 public class Recipe implements Food {
     String id;
