@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class RecipeList extends FragmentActivity {
@@ -26,12 +27,17 @@ public class RecipeList extends FragmentActivity {
         //Todo: Actually input recipe data
         //String[] from = { "mashed potatoes","sandwich","chips","beer" };
 
-        final Map<String, String> recipes = Cache.getRecipes();
+        //final Map<String, String> recipes = Cache.getRecipes();
+
+        final Map<String, String> recipes = new HashMap<>();
+        recipes.put("0", "mashed potatoes");
+        recipes.put("1", "mashed beer");
+        recipes.put("2", "beer potatoes");
 
 
         ArrayAdapter arrayAdapter = null;
 
-        listView = (ListView) findViewById(R.id.RecipeView);
+        listView = (ListView) findViewById(R.id.recipeList);
 
         if(!recipes.isEmpty()) {
 
@@ -40,7 +46,7 @@ public class RecipeList extends FragmentActivity {
                 public void onItemClick(AdapterView<?> a, View v, int position,
                                         long id) {
 
-                    Intent intent = new Intent(RecipeList.this, RecipeView.class);
+                    Intent intent = new Intent(RecipeList.this, RecipeDisplayOne.class);
                     RecipePair entry = (RecipePair) a.getItemAtPosition(position);
                     String recipeId = entry.getId();
                     intent.putExtra("identifier", recipeId);
@@ -54,12 +60,12 @@ public class RecipeList extends FragmentActivity {
                 recipePairs.add(new RecipePair(entry.getKey(), entry.getValue()));
             }
 
-            RecipePair[] packedPairs = (RecipePair[]) recipePairs.toArray();
+            RecipePair[] packedPairs = recipePairs.toArray(new RecipePair[recipePairs.size()]);
 
-            arrayAdapter = new RecipeViewAdapter(this, R.layout.recipedisplay, packedPairs);
+            arrayAdapter = new RecipeViewAdapter(this, R.layout.recipe_list_element, packedPairs);
 
         } else {
-            arrayAdapter = new ArrayAdapter(this,R.layout.recipedisplay, R.id.recipeName, new String[] {"No Recipes Found"});
+            arrayAdapter = new ArrayAdapter(this,R.layout.recipe_list_element, R.id.recipe_list_element_name, new String[] {"No Recipes Found"});
 
         }
 

@@ -6,16 +6,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class RecipeView extends Activity {
+public class RecipeDisplayOne extends Activity {
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipe_view);
+        setContentView(R.layout.activity_recipe_display_one);
         Bundle extras = getIntent().getExtras();
         String Recipename = extras.getString("identifier");
-        TextView name = (TextView) this.findViewById(R.id.recipeViewName);
+        TextView name = (TextView) this.findViewById(R.id.recipe_display_one_name);
         name.setText(Recipename);
     }
 

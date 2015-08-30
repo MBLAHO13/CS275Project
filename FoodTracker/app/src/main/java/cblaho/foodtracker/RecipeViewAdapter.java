@@ -11,15 +11,8 @@ import android.widget.TextView;
  * Created by cblaho on 8/30/15.
  */
 public class RecipeViewAdapter extends ArrayAdapter<RecipePair> {
-    private final Context context;
-    private final int layoutResourceId;
-    RecipePair[] data = null;
-
     public RecipeViewAdapter(Context context, int layoutResourceId, RecipePair[] data) {
         super(context, layoutResourceId, data);
-        this.layoutResourceId = layoutResourceId;
-        this.context = context;
-        this.data = data;
     }
 
 
@@ -28,10 +21,10 @@ public class RecipeViewAdapter extends ArrayAdapter<RecipePair> {
             if(convertView == null) {
                 LayoutInflater inflater = (LayoutInflater)
                         this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.activity_recipe_add, parent, false);
+                convertView = inflater.inflate(R.layout.recipe_list_element, parent, false);
             }
 
-            TextView name = (TextView) convertView.findViewById(R.id.recipeViewName);
+            TextView name = (TextView) convertView.findViewById(R.id.recipe_list_element_name);
 
             name.setText(this.getItem(position).getName());
 
