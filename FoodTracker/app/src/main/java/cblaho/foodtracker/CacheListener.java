@@ -1,6 +1,6 @@
 package cblaho.foodtracker;
 
-import com.google.gson.JsonArray;
+import java.util.Map;
 
 /**
  * Created by maxm on 8/29/15.
@@ -8,5 +8,5 @@ import com.google.gson.JsonArray;
 public interface CacheListener {
     void onProgressUpdate(int progress);
     void onFoodFound(Food f);
-    void onSearchResult(JsonArray results);
+    void onSearchResult(Map<String,String> results);
 }

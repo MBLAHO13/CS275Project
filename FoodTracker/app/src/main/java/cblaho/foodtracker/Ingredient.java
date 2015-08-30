@@ -4,6 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,12 +25,22 @@ public class Ingredient implements Food {
     public Ingredient(String id, Map<String, Double> conversions, String name, String conversion, Double quantity, String group, Map<String, Double> nutrients) {
         //manual constructor, you probably shouldn't use this outright.
         this.id = id;
-        this.conversions = conversions;
-        this.conversion = conversion;
         this.name = name;
-        this.quantity = quantity;
         this.group = group;
         this.nutrients = nutrients;
+        this.conversions = conversions;
+        this.conversion = conversion;
+        this.quantity = quantity;
+    }
+
+    public Ingredient(String id, String name, String group, Map<String,Double> nutrients) {
+        this.id = id;
+        this.name = name;
+        this.group = group;
+        this.nutrients = nutrients;
+        this.conversions = new HashMap<>();
+        this.conversion = null;
+        this.quantity = 1.0;
     }
 
     public Ingredient(JsonObject response){
@@ -58,6 +70,11 @@ public class Ingredient implements Food {
     }
 
     @Override
+    public List<Food> getIngredients() {
+        return null;
+    }
+
+    @Override
     public String getID() {
         return id;
     }
@@ -65,6 +82,16 @@ public class Ingredient implements Food {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String getGroup() {
+        return group;
+    }
+
+    @Override
+    public Map<String, Double> getNutrients() {
+        return nutrients;
     }
 
     @Override

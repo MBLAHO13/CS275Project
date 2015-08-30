@@ -1,5 +1,6 @@
 package cblaho.foodtracker;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,10 +13,10 @@ public class Recipe implements Food {
     Double qty;
     String conversion;
     String steps;
-    List<Ingredient> ingredients;
+    List<Food> ingredients;
     Map<String,Double> conversions;
 
-    public Recipe(String id, String name, Double qty, List<Ingredient> ingredients, Map<String,Double> conversions, String conversion, String steps) {
+    public Recipe(String id, String name, Double qty, List<Food> ingredients, Map<String,Double> conversions, String conversion, String steps) {
         this.id = id;
         this.qty = qty;
         this.name = name;
@@ -23,6 +24,14 @@ public class Recipe implements Food {
         this.conversions = conversions;
         this.conversion = conversion;
         this.ingredients = ingredients;
+    }
+
+    public void addIngredient(Food f) {
+        ingredients.add(f);
+    }
+
+    public List<Food> getIngredients() {
+        return ingredients;
     }
 
     @Override
@@ -36,10 +45,29 @@ public class Recipe implements Food {
     }
 
     @Override
+    public String getGroup() {
+        return null;
+    }
+
+    @Override
+    public Map<String, Double> getNutrients() {
+        HashMap<String,Double> nutrients = new HashMap<>();
+        Double value;
+        for(String n : ingredients.get(0).getNutrients().keySet()) {
+            value = 0.0;
+            for(Food f : ingredients) {
+                value += f.getNutrient(n);
+            }
+            nutrients.put(n, value);
+        }
+        return nutrients;
+    }
+
+    @Override
     public Double getNutrient(String name) {
         Double nutrient = 0.0;
-        for(Ingredient i : ingredients) {
-            nutrient += i.getNutrient(name);
+        for(Food f : ingredients) {
+            nutrient += f.getNutrient(name);
         }
         return nutrient*qty;
     }
