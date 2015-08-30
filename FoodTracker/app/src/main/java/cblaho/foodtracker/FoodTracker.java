@@ -13,8 +13,8 @@ public class FoodTracker extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.recipe_list);
-        Intent intent = new Intent(this, RecipeList.class);
-        startActivity(intent);
+        startListActivity();
+
 //        NavDrawerItem yourRecipe = new NavDrawerItem(R.drawable.yourrecipe, "Your Recipes");
 //        NavDrawerItem addRecipe = new NavDrawerItem(R.drawable.addrecipe, "Add Recipe");
 //        NavDrawerItem addIngredient = new NavDrawerItem(R.drawable.addingredient, "Add Ingredient");
@@ -34,6 +34,10 @@ public class FoodTracker extends Activity {
         return true;
     }
 
+    public void startListActivity(){
+        Intent intent = new Intent(this, RecipeList.class);
+        startActivity(intent);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -47,5 +51,9 @@ public class FoodTracker extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    protected void onResume(){
+        super.onResume();
+        finish();
     }
 }
