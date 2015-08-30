@@ -48,34 +48,6 @@ public class DbHandler {
         }
     }
 
-    public Ingredient getIngredient(String name) {
-        Cursor c = database.query(table, null, "name=?", new String[] {name}, null, null, null, null);
-        if(c != null) {
-            String id = null;
-            String group_name = null;
-            HashMap<String,Double> nutrients = new HashMap<>();
-            for(String s : c.getColumnNames()) {
-                switch (s) {
-                    case "id":
-                        id = c.getString(c.getColumnIndex(s));
-                        break;
-                    case "name":
-                        break;
-                    case "group_name":
-                        group_name = c.getString(c.getColumnIndex(s));
-                        break;
-                    default:
-                        nutrients.put(s, c.getDouble(c.getColumnIndex(s)));
-                        break;
-                }
-            }
-            c.close();
-            return new Ingredient(id, name, group_name, nutrients);
-        } else {
-            return null;
-        }
-    }
-
     public void save(Food f) {
         ContentValues values = new ContentValues();
         values.put("id", f.getID());

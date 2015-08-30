@@ -1,5 +1,6 @@
 package cblaho.foodtracker;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,18 +9,38 @@ import java.util.Map;
  * Created by mmattes on 8/29/15.
  */
 public class Recipe implements Food {
-    String id;
-    String name;
-    Double qty;
-    String conversion;
-    String steps;
-    List<Food> ingredients;
-    Map<String,Double> conversions;
+    private String id;
+    private String name;
+    private Double qty;
+    private String conversion;
+    private String steps;
+    private List<Food> ingredients;
+    private Map<String,Double> conversions;
+
+    public Recipe(String id, String name, String steps, Map<String,Double> conversions, List<Food> ingredients) {
+        this.id = id;
+        this.qty = 1.0;
+        this.name = name.replace(",","");
+        this.steps = steps;
+        this.conversions = conversions;
+        this.conversion = null;
+        this.ingredients = ingredients;
+    }
+
+    public Recipe(String id) {
+        this.id = id;
+        this.qty = 1.0;
+        this.name = null;
+        this.steps = null;
+        this.conversions = new HashMap<>();
+        this.conversion = null;
+        this.ingredients = new ArrayList<>();
+    }
 
     public Recipe(String id, String name, Double qty, List<Food> ingredients, Map<String,Double> conversions, String conversion, String steps) {
         this.id = id;
         this.qty = qty;
-        this.name = name;
+        this.name = name.replace(",","");
         this.steps = steps;
         this.conversions = conversions;
         this.conversion = conversion;
@@ -47,6 +68,14 @@ public class Recipe implements Food {
     @Override
     public String getGroup() {
         return null;
+    }
+
+    public String getSteps() {
+        return steps;
+    }
+
+    public void setName(String name) {
+        this.name = name.replace(",","");
     }
 
     @Override

@@ -5,22 +5,21 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
  * Created by cblaho and mmattes on 8/29/15.
  */
 public class Ingredient implements Food {
-    String id;
-    String name;
-    String group;
-    Double quantity;
-    String conversion;
+    private String id;
+    private String name;
+    private String group;
+    private Double quantity;
+    private String conversion;
     //map name of nutrient to nutrient tuple of unit:amount
-    Map<String, Double> nutrients;
+    private Map<String, Double> nutrients;
     //map name of conversion to grams, eg. cup:12.0[g], slice:1.0[g]
-    Map<String, Double> conversions;
+    private Map<String, Double> conversions;
 
     public Ingredient(String id, Map<String, Double> conversions, String name, String conversion, Double quantity, String group, Map<String, Double> nutrients) {
         //manual constructor, you probably shouldn't use this outright.
@@ -67,11 +66,6 @@ public class Ingredient implements Food {
             );
         }
         this.conversion = null;
-    }
-
-    @Override
-    public List<Food> getIngredients() {
-        return null;
     }
 
     @Override
