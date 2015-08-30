@@ -19,8 +19,7 @@ public class RecipeViewAdapter extends ArrayAdapter<RecipePair> {
         @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
             if(convertView == null) {
-                LayoutInflater inflater = (LayoutInflater)
-                        this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.recipe_list_element, parent, false);
             }
 

@@ -24,15 +24,14 @@ public class RecipeList extends FragmentActivity {
 
         ListView listView;
 
-        //Todo: Actually input recipe data
-        //String[] from = { "mashed potatoes","sandwich","chips","beer" };
 
+        //todo: uncomment for cache class
         //final Map<String, String> recipes = Cache.getRecipes();
 
         final Map<String, String> recipes = new HashMap<>();
-        recipes.put("0", "mashed potatoes");
-        recipes.put("1", "mashed beer");
-        recipes.put("2", "beer potatoes");
+//        recipes.put("0", "mashed potatoes");
+//        recipes.put("1", "mashed beer");
+//        recipes.put("2", "beer potatoes");
 
 
         ArrayAdapter arrayAdapter = null;
@@ -66,7 +65,7 @@ public class RecipeList extends FragmentActivity {
 
         } else {
             arrayAdapter = new ArrayAdapter(this,R.layout.recipe_list_element, R.id.recipe_list_element_name, new String[] {"No Recipes Found"});
-
+            //todo: make this add a new recipe
         }
 
         listView.setAdapter(arrayAdapter);
