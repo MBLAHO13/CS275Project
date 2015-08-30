@@ -6,9 +6,12 @@ import android.support.v4.app.FragmentActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class RecipeList extends FragmentActivity {
 
@@ -21,29 +24,50 @@ public class RecipeList extends FragmentActivity {
         ListView listView;
 
         //Todo: Actually input recipe data
-        String[] from = { "mashed potatoes","sandwich","chips","beer" };
+        //String[] from = { "mashed potatoes","sandwich","chips","beer" };
 
-        ArrayAdapter arrayAdapter;
+        final Map<String, String> recipes = Cache.getRecipes();
+
+
+        ArrayAdapter arrayAdapter = null;
 
         listView = (ListView) findViewById(R.id.RecipeView);
 
-        arrayAdapter = new ArrayAdapter(this,R.layout.recipedisplay, R.id.recipeName, from);
+        if(!recipes.isEmpty()) {
+
+            listView.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> a, View v, int position,
+                                        long id) {
+
+                    Intent intent = new Intent(RecipeList.this, RecipeView.class);
+                    RecipePair entry = (RecipePair) a.getItemAtPosition(position);
+                    String recipeId = entry.getId();
+                    intent.putExtra("identifier", recipeId);
+
+                    startActivity(intent);
+                }
+            });
+
+            ArrayList<RecipePair> recipePairs = new ArrayList<>();
+            for (Map.Entry<String, String> entry : recipes.entrySet()) {
+                recipePairs.add(new RecipePair(entry.getKey(), entry.getValue()));
+            }
+
+            RecipePair[] packedPairs = (RecipePair[]) recipePairs.toArray();
+
+            arrayAdapter = new RecipeViewAdapter(this, R.layout.recipedisplay, packedPairs);
+
+        } else {
+            arrayAdapter = new ArrayAdapter(this,R.layout.recipedisplay, R.id.recipeName, new String[] {"No Recipes Found"});
+
+        }
 
         listView.setAdapter(arrayAdapter);
 
-        listView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> a, View v, int position,
-                                    long id) {
 
-                Intent intent = new Intent(RecipeList.this, RecipeView.class);
-                String entry =  (String) a.getItemAtPosition(position);
-                String recipeId = "r0";
-                intent.putExtra("identifier", recipeId );
 
-                startActivity(intent);
-            }
-        });
+
 
     }
 
@@ -71,5 +95,6 @@ public class RecipeList extends FragmentActivity {
 
     public void startRecipeAdd(){
         Intent intent = new Intent(RecipeList.this, RecipeAdd.class);
+
     }
 }
