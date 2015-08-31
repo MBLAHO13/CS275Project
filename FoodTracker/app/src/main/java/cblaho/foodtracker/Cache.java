@@ -106,6 +106,9 @@ public class Cache {
     }
 
     public Ingredient getIngredientById(String id) {
+        if(!ingredients.containsKey(id)) {
+            (new RestHandler(listener)).execute("id",id);
+        }
         JsonHandler json;
         try {
             json = new JsonHandler(id, context);
@@ -134,7 +137,7 @@ public class Cache {
                 }
             }
         } else {
-            (new RestHandler(listener)).execute(name);
+            (new RestHandler(listener)).execute("name",name);
         }
     }
 
