@@ -101,6 +101,11 @@ public class RecipeList extends FragmentActivity {
     public void startRecipeAdd(){
         Intent intent = new Intent(RecipeList.this, RecipeAdd.class);
 
+        //generate recipe ID
+        //Create new recipe object
+        //bundle recipe object
+        startActivity(intent);
+
     }
 
 

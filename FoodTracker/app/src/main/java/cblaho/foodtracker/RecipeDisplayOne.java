@@ -14,9 +14,12 @@ public class RecipeDisplayOne extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_display_one);
         Bundle extras = getIntent().getExtras();
-        String Recipename = extras.getString("identifier");
+        String Recipeid = extras.getString("identifier");
+        Recipe fullRecipe = Cache.getRecipe(Recipeid);
         TextView name = (TextView) this.findViewById(R.id.recipe_display_one_name);
-        name.setText(Recipename);
+        name.setText(fullRecipe.getName());
+        //todo: figure out how the rest of this will work
+
     }
 
     @Override
