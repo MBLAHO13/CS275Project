@@ -1,5 +1,8 @@
 package cblaho.foodtracker;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -10,7 +13,7 @@ import java.util.Map;
 /**
  * Created by cblaho and mmattes on 8/29/15.
  */
-public class Ingredient implements Food {
+public class Ingredient implements Food, Parcelable {
     private String id;
     private String name;
     private String group;
@@ -126,4 +129,41 @@ public class Ingredient implements Food {
     public void addConversion(String name, Double grams) {
         conversions.put(name, grams);
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeMap(conversions);
+        dest.writeString(name);
+        dest.writeString(conversion);
+        dest.writeDouble(quantity);
+        dest.writeString(group);
+        dest.writeMap(nutrients);
+    }
+
+    public static final Parcelable.Creator<Ingredient> CREATOR = new Parcelable.Creator<Ingredient>() {
+        @Override
+        public Ingredient createFromParcel(Parcel source) {
+            Map<String,Double> nutrients = new HashMap<>();
+            Map<String,Double> conversions = new HashMap<>();
+            String id = source.readString();
+            source.readMap(conversions, null);
+            String name = source.readString();
+            String conversion = source.readString();
+            Double quantity = source.readDouble();
+            String group = source.readString();
+            source.readMap(nutrients, null);
+            return new Ingredient(id, conversions, name, conversion, quantity, group, nutrients);
+        }
+
+        @Override
+        public Ingredient[] newArray(int size) {
+            return new Ingredient[size];
+        }
+    };
 }

@@ -22,11 +22,13 @@ public class Cache {
     private DbHandler database;
     private Map<String,String> ingredients;
     private Map<String,String> recipes;
+    private Integer maxId;
 
     public Cache(CacheListener listener, Context context) {
         this.context = context;
         this.database = new DbHandler(context);
         this.listener = listener;
+        this.maxId = 0;
         this.ingredients = database.getIngredientList();
         this.recipes = this.getRecipeList();
     }
@@ -43,9 +45,14 @@ public class Cache {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
             String line = reader.readLine();
+            Integer id;
             while (line != null) {
                 String vals[] = line.split(",");
                 r.put(vals[0], vals[1]);
+                id = Integer.getInteger(vals[0].replace("R","").replace("r",""));
+                if(id > maxId) {
+                    maxId = id;
+                }
             }
         } catch (IOException e) {
             return r;
@@ -61,10 +68,10 @@ public class Cache {
         this.recipes.put(id, name);
         FileOutputStream fos;
         try {
-            fos = context.openFileOutput("recipes.csv", context.MODE_APPEND);
+            fos = context.openFileOutput("recipes.csv", Context.MODE_APPEND);
         } catch(FileNotFoundException e) {
             try {
-                fos = context.openFileOutput("recipes.csv", context.MODE_PRIVATE);
+                fos = context.openFileOutput("recipes.csv", Context.MODE_PRIVATE);
             } catch(FileNotFoundException e2) {
                 return;
             }
@@ -80,8 +87,8 @@ public class Cache {
     }
 
     public String getNextRecipeId() {
-        // TODO: this too
-        return "R0";
+        maxId++;
+        return "R" + maxId.toString();
     }
 
     public Food getFoodById(String id) {
@@ -107,7 +114,15 @@ public class Cache {
             f.setConversion(jsonIngredients.get(ingredientId).getUnit());
             ingredients.add(f);
         }
-        return new Recipe(id, json.getName(), json.getSteps(), json.getConversions(), ingredients);
+        return new Recipe(
+                id,
+                json.getName(),
+                json.getQty(),
+                ingredients,
+                json.getConversions(),
+                json.getConversion(),
+                json.getSteps()
+        );
     }
 
     public Ingredient getIngredientById(String id) {
