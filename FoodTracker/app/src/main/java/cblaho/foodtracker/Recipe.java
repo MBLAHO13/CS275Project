@@ -1,5 +1,8 @@
 package cblaho.foodtracker;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +11,7 @@ import java.util.Map;
 /**
  * Created by mmattes on 8/29/15.
  */
-public class Recipe implements Food {
+public class Recipe implements Food, Parcelable {
     private String id;
     private String name;
     private Double qty;
@@ -129,5 +132,16 @@ public class Recipe implements Food {
     @Override
     public void addConversion(String name, Double grams) {
         conversions.put(name, grams);
+    }
+
+    @Override
+    public int describeContents() {
+        //TODO: This
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        //TODO: this too
     }
 }

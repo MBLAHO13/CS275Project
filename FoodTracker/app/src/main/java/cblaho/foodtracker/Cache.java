@@ -79,6 +79,11 @@ public class Cache {
         }
     }
 
+    public String getNextRecipeId() {
+        // TODO: this too
+        return "R0";
+    }
+
     public Food getFoodById(String id) {
         if(id.startsWith("R") || id.startsWith("r")) {
             return getRecipeById(id);
