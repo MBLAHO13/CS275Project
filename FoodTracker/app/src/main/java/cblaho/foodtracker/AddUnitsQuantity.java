@@ -1,37 +1,31 @@
 package cblaho.foodtracker;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 
 public class AddUnitsQuantity extends Activity {
+    private Recipe recipe;
+    private Food ingredient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_units_quantity);
+        Intent intent = getIntent();
+        this.recipe = intent.getParcelableExtra("recipe");
+        this.ingredient = intent.getParcelableExtra("ingredient");
+        getActionBar().setTitle(ingredient.getName());
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_add_units_quantity, menu);
-        return true;
+    public void onDoneIngredients(View view) {
+        Intent intent = new Intent(AddUnitsQuantity.this, RecipeSteps.class);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    public void onAddAnother(View view) {
+        Intent intent = new Intent(AddUnitsQuantity.this, AddIngredient.class);
+        intent.putExtra("recipe", this.recipe);
+        startActivity(intent);
     }
 }

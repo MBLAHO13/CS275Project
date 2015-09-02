@@ -19,16 +19,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/unitLabel"/>
 
-
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_below="@+id/unitDropdown"
         android:text="Amount Needed: "
-        android:id="@+id/amountLabel"
-         />
+        android:id="@+id/amountLabel"/>
 
     <EditText
         android:layout_width="wrap_content"
@@ -44,8 +41,9 @@
         android:layout_height="wrap_content"
         android:text="Add Another Ingredient"
         android:id="@+id/button_add_another"
+        android:onClick="onAddAnother"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -53,7 +51,7 @@
         android:text="Finish Recipe"
         android:id="@+id/button_finish_recipe"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentEnd="true" />
 
 
 </RelativeLayout>
