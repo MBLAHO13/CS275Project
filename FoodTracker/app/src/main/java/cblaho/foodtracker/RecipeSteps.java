@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class recipeSteps extends Activity {
+public class RecipeSteps extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

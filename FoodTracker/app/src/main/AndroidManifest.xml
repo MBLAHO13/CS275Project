@@ -37,7 +37,7 @@
             android:label="@string/title_activity_add_units_quantity" >
         </activity>
         <activity
-            android:name=".recipeSteps"
+            android:name=".RecipeSteps"
             android:label="@string/title_activity_recipe_steps" >
         </activity>
     </application>
