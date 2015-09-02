@@ -25,12 +25,19 @@ public class Cache {
     private Integer maxId;
 
     public Cache(CacheListener listener, Context context) {
+        System.out.println("Generating Cache");
         this.context = context;
         this.database = new DbHandler(context);
         this.listener = listener;
         this.maxId = 0;
         this.ingredients = database.getIngredientList();
         this.recipes = this.getRecipeList();
+        for(String id : ingredients.keySet()) {
+            System.out.println("Known ID: " + id);
+        }
+        for(String id : recipes.keySet()) {
+            System.out.println("Known ID: " + id);
+        }
     }
 
     private Map<String,String> getRecipeList() {
@@ -46,13 +53,19 @@ public class Cache {
             BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
             String line = reader.readLine();
             Integer id;
+            this.maxId = 0;
             while (line != null) {
+                System.out.println(line);
                 String vals[] = line.split(",");
+                System.out.println("vals[0]: " + vals[0]);
+                System.out.println("vals[1]: " + vals[1]);
                 r.put(vals[0], vals[1]);
-                id = Integer.getInteger(vals[0].replace("R","").replace("r",""));
-                if(id > maxId) {
-                    maxId = id;
+                id = Integer.parseInt(vals[0].replace("R", "").replace("r", ""));
+                System.out.println("id: " + id.toString());
+                if(id > this.maxId) {
+                    this.maxId = id;
                 }
+                line = reader.readLine();
             }
         } catch (IOException e) {
             return r;
@@ -100,6 +113,7 @@ public class Cache {
     }
 
     public Recipe getRecipeById(String id) {
+        System.out.println("Getting by id: " + id);
         JsonHandler json;
         try {
             json = new JsonHandler(id, context);
@@ -126,6 +140,7 @@ public class Cache {
     }
 
     public Ingredient getIngredientById(String id) {
+        System.out.println("Getting by id: " + id);
         if(!ingredients.containsKey(id)) {
             (new RestHandler(listener)).execute("id",id);
         }
@@ -162,6 +177,7 @@ public class Cache {
     }
 
     public void save(Recipe r) {
+        System.out.println("Saving " + r.getName());
         for(Food i : r.getIngredients()) {
             if(i.getID().startsWith("r") || i.getID().startsWith("R")) {
                 this.save((Recipe) i);
@@ -170,10 +186,13 @@ public class Cache {
             }
         }
         (new JsonHandler(r, context)).write();
-        addToRecipeList(r.getID(), r.getName());
+        if(!recipes.containsKey(r.getID())) {
+            addToRecipeList(r.getID(), r.getName());
+        }
     }
 
     public void save(Ingredient i) {
+        System.out.println("Saving " + i.getName());
         ingredients.put(i.getID(), i.getName());
         database.save(i);
         (new JsonHandler(i, context)).write();

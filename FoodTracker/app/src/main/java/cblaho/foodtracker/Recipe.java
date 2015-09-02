@@ -148,7 +148,7 @@ public class Recipe implements Food, Parcelable {
             String id = source.readString();
             String name = source.readString();
             Double qty = source.readDouble();
-            source.readList(ingredients, null);
+            source.readList(ingredients, Ingredient.class.getClassLoader());
             source.readMap(conversions, null);
             String conversion = source.readString();
             String steps = source.readString();
