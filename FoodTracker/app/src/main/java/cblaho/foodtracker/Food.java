@@ -14,6 +14,7 @@ public interface Food extends Parcelable {
     Map<String,Double> getNutrients();
     Double getNutrient(String name);
     Double getQty();
+    Double getGrams();
     void setQty(Double qty);
     Map<String, Double> getConversions();
     String getConversion();

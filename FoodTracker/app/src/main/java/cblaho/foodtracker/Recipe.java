@@ -103,6 +103,19 @@ public class Recipe implements Food {
     }
 
     @Override
+    public Double getGrams() {
+        Double grams = 0.0;
+        for(Food f : ingredients) {
+            grams += f.getGrams();
+        }
+        if(conversion == null) {
+            return grams*qty;
+        } else {
+            return grams*qty*conversions.get(conversion);
+        }
+    }
+
+    @Override
     public void setQty(Double qty) {
         this.qty = qty;
     }
@@ -120,6 +133,10 @@ public class Recipe implements Food {
     @Override
     public void setConversion(String name) {
         conversion = name;
+    }
+
+    public void setSteps(String steps) {
+        this.steps = steps;
     }
 
     @Override

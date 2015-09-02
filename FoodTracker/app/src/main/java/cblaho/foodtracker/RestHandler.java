@@ -29,7 +29,7 @@ public class RestHandler extends AsyncTask<String,Integer,JsonObject> {
     protected JsonObject doInBackground(String... params) {
         HttpURLConnection request = null;
         try {
-            URL url = new URL(dburl + params[0]);
+            URL url = new URL(dburl + params[0] + "/");
             request = (HttpURLConnection) url.openConnection();
             request.setRequestProperty("request-value", params[1]);
             request.connect();

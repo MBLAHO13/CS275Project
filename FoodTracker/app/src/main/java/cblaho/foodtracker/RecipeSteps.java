@@ -1,37 +1,34 @@
 package cblaho.foodtracker;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 public class RecipeSteps extends Activity {
+    private Recipe recipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_steps);
+        Intent intent = getIntent();
+        recipe = intent.getParcelableExtra("recipe");
+        getActionBar().setTitle("Finish Recipe Details");
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_recipe_steps, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    public void onFinish(View view) {
+        recipe.setName(((EditText) findViewById(R.id.recipe_steps_name)).getText().toString());
+        Double servings = Double.parseDouble(((EditText) findViewById(R.id.recipe_steps_servings)).getText().toString());
+        recipe.addConversion("servings", recipe.getGrams()/servings);
+        recipe.setConversion("servings");
+        recipe.setQty(servings);
+        recipe.setSteps(((EditText) findViewById(R.id.recipe_steps_steps)).getText().toString());
+        Cache cache = new Cache(null, getApplicationContext());
+        cache.save(recipe);
+        Intent intent = new Intent(RecipeSteps.this, RecipeDisplayOne.class);
+        intent.putExtra("recipe", recipe);
+        startActivity(intent);
     }
 }

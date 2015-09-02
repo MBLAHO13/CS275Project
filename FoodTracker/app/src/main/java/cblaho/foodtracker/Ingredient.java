@@ -106,6 +106,11 @@ public class Ingredient implements Food {
     }
 
     @Override
+    public Double getGrams() {
+        return quantity*conversions.get(conversion);
+    }
+
+    @Override
     public void setQty(Double qty) {
         quantity = qty;
     }
