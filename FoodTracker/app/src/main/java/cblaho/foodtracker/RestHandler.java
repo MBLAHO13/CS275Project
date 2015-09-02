@@ -18,7 +18,7 @@ import java.util.Map;
  * Created by maxm on 8/30/15.
  */
 public class RestHandler extends AsyncTask<String,Integer,JsonObject> {
-    private static final String dburl = "52.88.94.147:5000/rest/api/";
+    private static final String dburl = "http://52.88.94.147:5000/rest/api/";
     private CacheListener listener;
     public RestHandler(CacheListener listener) {
         super();
@@ -52,7 +52,7 @@ public class RestHandler extends AsyncTask<String,Integer,JsonObject> {
         if(root.get("response").getAsString().equals("search")) {
             // format search results
             Map<String,String> search = new HashMap<>();
-            for(JsonElement e : root.get("results").getAsJsonArray()) {
+            for(JsonElement e : root.get("result").getAsJsonArray()) {
                 search.put(
                         e.getAsJsonObject().get("id").getAsString(),
                         e.getAsJsonObject().get("name").getAsString()

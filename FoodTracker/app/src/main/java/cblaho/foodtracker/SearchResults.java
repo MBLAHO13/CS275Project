@@ -14,25 +14,27 @@ import java.util.Map;
 
 public class SearchResults extends Activity {
     private Cache cache;
-    private Recipe recipe;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        cache = new Cache(null, getApplicationContext());
         setContentView(R.layout.activity_search_results);
         Intent i = getIntent();
-        Recipe recipe = i.getParcelableExtra("recipe");
+        final Recipe recipe = i.getParcelableExtra("recipe");
         Map<String, String> results = (HashMap) i.getSerializableExtra("results");
         ArrayAdapter arrayAdapter;
         ListView listView;
-        listView = (ListView) findViewById(R.id.recipeList);
+        listView = (ListView) findViewById(R.id.search_results_list_view);
         if(!results.isEmpty()) {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> a, View v, int position,
                                         long id) {
-                    Intent intent = new Intent(SearchResults.this, RecipeSteps.class);
+                    Intent intent = new Intent(SearchResults.this, AddUnitsQuantity.class);
                     RecipePair entry = (RecipePair) a.getItemAtPosition(position);
                     intent.putExtra("ingredient", cache.getIngredientById(entry.getId()));
+                    intent.putExtra("recipe", recipe);
                     startActivity(intent);
                 }
             });
