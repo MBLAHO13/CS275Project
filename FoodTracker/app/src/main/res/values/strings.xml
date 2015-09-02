@@ -15,4 +15,7 @@
     <string name="title_activity_recipe_list">RecipeList</string>
     <string name="title_activity_recipe_view">RecipeView</string>
     <string name="title_activity_recipe_add">RecipeAdd</string>
+    <string name="title_activity_recipe_add_search_results">RecipeAddSearchResults</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

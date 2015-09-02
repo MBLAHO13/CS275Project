@@ -32,6 +32,10 @@
             android:name=".RecipeAdd"
             android:label="@string/title_activity_recipe_add" >
         </activity>
+        <activity
+            android:name=".RecipeAddSearchResults"
+            android:label="@string/title_activity_recipe_add_search_results" >
+        </activity>
     </application>
 
 </manifest>
