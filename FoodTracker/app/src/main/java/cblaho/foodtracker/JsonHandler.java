@@ -7,6 +7,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -25,9 +26,9 @@ public class JsonHandler {
     public JsonHandler(String id, Context context) throws FileNotFoundException {
         this.filename = id + ".json";
         this.context = context;
-        this.root = (new JsonParser())
-                .parse(new InputStreamReader(context.openFileInput(filename)))
-                .getAsJsonObject();
+        JsonReader reader = new JsonReader(new InputStreamReader(context.openFileInput(filename)));
+        reader.setLenient(true);
+        this.root = (new JsonParser()).parse(reader).getAsJsonObject();
     }
 
     public JsonHandler(Recipe r, Context context) {
@@ -75,10 +76,10 @@ public class JsonHandler {
     public void write() {
         FileOutputStream fos;
         try {
-            fos = context.openFileOutput(filename, context.MODE_APPEND);
+            fos = context.openFileOutput(filename, Context.MODE_APPEND);
         } catch(FileNotFoundException e) {
             try {
-                fos = context.openFileOutput(filename, context.MODE_PRIVATE);
+                fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
             } catch(FileNotFoundException e2) {
                 return;
             }

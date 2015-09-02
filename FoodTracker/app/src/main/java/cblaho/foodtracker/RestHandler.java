@@ -31,7 +31,7 @@ public class RestHandler extends AsyncTask<String,Integer,JsonObject> {
         try {
             URL url = new URL(dburl + params[0]);
             request = (HttpURLConnection) url.openConnection();
-            request.setRequestProperty("request-type", params[1]);
+            request.setRequestProperty("request-value", params[1]);
             request.connect();
             JsonParser jp = new JsonParser();
             JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
