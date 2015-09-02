@@ -36,6 +36,10 @@
             android:name=".RecipeAddSearchResults"
             android:label="@string/title_activity_recipe_add_search_results" >
         </activity>
+        <activity
+            android:name=".AddUnitsQuantity"
+            android:label="@string/title_activity_add_units_quantity" >
+        </activity>
     </application>
 
 </manifest>

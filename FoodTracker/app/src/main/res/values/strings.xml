@@ -18,4 +18,5 @@
     <string name="title_activity_recipe_add_search_results">RecipeAddSearchResults</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_add_units_quantity">AddUnitsQuantity</string>
 </resources>
