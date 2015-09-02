@@ -18,7 +18,7 @@ import java.util.Map;
  * Created by maxm on 8/30/15.
  */
 public class RestHandler extends AsyncTask<String,Integer,JsonObject> {
-    private static final String dburl = "www.database.please.com/";
+    private static final String dburl = "52.88.94.147:5000/rest/api/";
     private CacheListener listener;
     public RestHandler(CacheListener listener) {
         super();
