@@ -19,6 +19,7 @@ public class RecipeList extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipe_list);
+        getActionBar().setTitle("Your Recipes");
         ListView listView;
         this.cache = new Cache(null, getApplicationContext());
         final Map<String, String> recipes = cache.getRecipes();
@@ -49,8 +50,8 @@ public class RecipeList extends FragmentActivity {
         listView.setAdapter(arrayAdapter);
     }
 
-    public void startRecipeAdd(){
-        Intent intent = new Intent(RecipeList.this, RecipeAdd.class);
+    public void startRecipeAdd(View view){
+        Intent intent = new Intent(RecipeList.this, AddIngredient.class);
         intent.putExtra("recipe", new Recipe(cache.getNextRecipeId()));
         startActivity(intent);
     }

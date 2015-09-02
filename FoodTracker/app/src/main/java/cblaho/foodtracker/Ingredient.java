@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Created by cblaho and mmattes on 8/29/15.
  */
-public class Ingredient implements Food, Parcelable {
+public class Ingredient implements Food {
     private String id;
     private String name;
     private String group;

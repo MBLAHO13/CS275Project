@@ -23,6 +23,7 @@ public class RecipeDisplayOne extends Activity {
         setContentView(R.layout.activity_recipe_display_one);
         Intent intent = getIntent();
         this.recipe = intent.getParcelableExtra("recipe");
+        getActionBar().setTitle(this.recipe.getName());
         TextView name = (TextView) this.findViewById(R.id.recipe_display_one_name);
         name.setText(recipe.getName());
         TextView servings = (TextView) this.findViewById(R.id.recipe_display_one_servings);

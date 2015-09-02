@@ -17,10 +17,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".navigationActivity"
-            android:label="@string/title_activity_navigation" >
-        </activity>
-        <activity
             android:name=".RecipeList"
             android:label="@string/title_activity_recipe_list" >
         </activity>
@@ -29,11 +25,11 @@
             android:label="@string/title_activity_recipe_view" >
         </activity>
         <activity
-            android:name=".RecipeAdd"
+            android:name=".AddIngredient"
             android:label="@string/title_activity_recipe_add" >
         </activity>
         <activity
-            android:name=".RecipeAddSearchResults"
+            android:name=".SearchResults"
             android:label="@string/title_activity_recipe_add_search_results" >
         </activity>
         <activity

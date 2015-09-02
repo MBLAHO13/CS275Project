@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Created by mmattes on 8/29/15.
  */
-public class Recipe implements Food, Parcelable {
+public class Recipe implements Food {
     private String id;
     private String name;
     private Double qty;
@@ -33,7 +33,10 @@ public class Recipe implements Food, Parcelable {
     public Recipe(String id, String name, Double qty, List<Food> ingredients, Map<String,Double> conversions, String conversion, String steps) {
         this.id = id;
         this.qty = qty;
-        this.name = name.replace(",","");
+        this.name = name;
+        if(this.name != null) {
+            this.name = this.name.replace(",","");
+        }
         this.steps = steps;
         this.conversions = conversions;
         this.conversion = conversion;

@@ -1,15 +1,15 @@
 package cblaho.foodtracker;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 
+import java.util.HashMap;
 import java.util.Map;
 
-public class RecipeAdd extends Activity implements CacheListener {
-    Recipe data;
+public class AddIngredient extends Activity implements CacheListener {
+    private Recipe recipe;
     private Cache cache;
 
     @Override
@@ -17,29 +17,28 @@ public class RecipeAdd extends Activity implements CacheListener {
         super.onCreate(savedInstanceState);
         this.cache = new Cache(this, getApplicationContext());
         setContentView(R.layout.addingredient);
-        ActionBar ab = getActionBar();
-        ab.setTitle("Add Ingredients");
-        //todo: sort out the steps
-        ab.setSubtitle("Step One of Two");
+        getActionBar().setTitle("Add an Ingredient");
         Intent intent = getIntent();
-        //data = intent.getParcelableExtra(MainActivity.ADDRESS_DATA);
-        //TextView title = (TextView) findViewById(R.id.titleText);
+        recipe = intent.getParcelableExtra("recipe");
     }
 
     public void searchIngredient(){
-        EditText mEdit   = (EditText)findViewById(R.id.recipe_add_searchbox);
+        EditText mEdit = (EditText)findViewById(R.id.add_ingredient_searchbox);
         String query = mEdit.getText().toString();
         cache.searchFood(query);
-
     }
 
     @Override
     public void onFoodFound(Food f) {
-        //pass information to add unit/quantity activity
+        Intent intent = new Intent(AddIngredient.this, AddUnitsQuantity.class);
+        intent.putExtra("recipe", this.recipe);
+        intent.putExtra("ingredient", f);
     }
 
     @Override
     public void onSearchResult(Map<String, String> results) {
-        //pass information to the list view thing
+        Intent intent = new Intent(AddIngredient.this, SearchResults.class);
+        intent.putExtra("recipe", this.recipe);
+        intent.putExtra("results", (HashMap) results);
     }
 }
