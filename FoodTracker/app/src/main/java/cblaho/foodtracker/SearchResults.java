@@ -12,13 +12,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SearchResults extends Activity {
+public class SearchResults extends Activity implements CacheListener{
     private Cache cache;
+    Recipe recipe;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        cache = new Cache(null, getApplicationContext());
+        cache = new Cache(this, getApplicationContext());
         setContentView(R.layout.activity_search_results);
         Intent i = getIntent();
         final Recipe recipe = i.getParcelableExtra("recipe");
@@ -33,6 +34,7 @@ public class SearchResults extends Activity {
                                         long id) {
                     Intent intent = new Intent(SearchResults.this, AddUnitsQuantity.class);
                     RecipePair entry = (RecipePair) a.getItemAtPosition(position);
+                    System.out.println((String) entry.getId() + (String) entry.getName());
                     intent.putExtra("ingredient", cache.getIngredientById(entry.getId()));
                     intent.putExtra("recipe", recipe);
                     startActivity(intent);
@@ -51,4 +53,15 @@ public class SearchResults extends Activity {
         }
         listView.setAdapter(arrayAdapter);
     }
+
+    @Override
+    public void onFoodFound(Food f) {
+        Intent intent = new Intent(SearchResults.this, AddUnitsQuantity.class);
+        intent.putExtra("recipe", this.recipe);
+        intent.putExtra("ingredient", f);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onSearchResult(Map<String, String> results) {}
 }
