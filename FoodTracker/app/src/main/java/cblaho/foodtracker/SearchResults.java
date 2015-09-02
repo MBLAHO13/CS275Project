@@ -1,9 +1,9 @@
 package cblaho.foodtracker;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
-public class SearchResults extends AppCompatActivity {
+public class SearchResults extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
