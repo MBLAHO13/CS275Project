@@ -5,18 +5,18 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class AddUnitsQuantity extends Activity {
+public class recipeSteps extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_units_quantity);
+        setContentView(R.layout.activity_recipe_steps);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_add_units_quantity, menu);
+        getMenuInflater().inflate(R.menu.menu_recipe_steps, menu);
         return true;
     }
 

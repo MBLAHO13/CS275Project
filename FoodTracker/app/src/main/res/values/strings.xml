@@ -19,4 +19,5 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_add_units_quantity">AddUnitsQuantity</string>
+    <string name="title_activity_recipe_steps">recipeSteps</string>
 </resources>
