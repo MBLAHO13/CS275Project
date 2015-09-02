@@ -20,16 +20,6 @@ public class Recipe implements Food, Parcelable {
     private List<Food> ingredients;
     private Map<String,Double> conversions;
 
-    public Recipe(String id, String name, String steps, Map<String,Double> conversions, List<Food> ingredients) {
-        this.id = id;
-        this.qty = 1.0;
-        this.name = name.replace(",","");
-        this.steps = steps;
-        this.conversions = conversions;
-        this.conversion = null;
-        this.ingredients = ingredients;
-    }
-
     public Recipe(String id) {
         this.id = id;
         this.qty = 1.0;
@@ -136,12 +126,38 @@ public class Recipe implements Food, Parcelable {
 
     @Override
     public int describeContents() {
-        //TODO: This
         return 0;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        //TODO: this too
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeDouble(qty);
+        dest.writeList(ingredients);
+        dest.writeMap(conversions);
+        dest.writeString(conversion);
+        dest.writeString(steps);
     }
+
+    public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
+        @Override
+        public Recipe createFromParcel(Parcel source) {
+            List<Food> ingredients = new ArrayList<>();
+            Map<String,Double> conversions = new HashMap<>();
+            String id = source.readString();
+            String name = source.readString();
+            Double qty = source.readDouble();
+            source.readList(ingredients, null);
+            source.readMap(conversions, null);
+            String conversion = source.readString();
+            String steps = source.readString();
+            return new Recipe(id,name,qty,ingredients,conversions,conversion,steps);
+        }
+
+        @Override
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+    };
 }

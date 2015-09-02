@@ -5,30 +5,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import java.util.Map;
-
-public class RecipeDisplayOne extends Activity implements CacheListener {
+public class RecipeDisplayOne extends Activity {
     private Cache cache;
     private Recipe recipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.cache = new Cache(this, getApplicationContext());
+        this.cache = new Cache(null, getApplicationContext());
         setContentView(R.layout.activity_recipe_display_one);
         Intent intent = getIntent();
-        recipe = intent.getParcelableExtra("recipe");
+        this.recipe = intent.getParcelableExtra("recipe");
         TextView name = (TextView) this.findViewById(R.id.recipe_display_one_name);
         name.setText(recipe.getName());
-    }
-
-    @Override
-    public void onFoodFound(Food f) {
-
-    }
-
-    @Override
-    public void onSearchResult(Map<String, String> results) {
-
     }
 }

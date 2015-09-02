@@ -36,6 +36,8 @@ public class JsonHandler {
         this.root = new JsonObject();
         this.root.addProperty("name", r.getName());
         this.root.addProperty("steps", r.getSteps());
+        this.root.addProperty("qty", r.getQty());
+        this.root.addProperty("conversion", r.getConversion());
         JsonArray conversions = new JsonArray();
         for(Map.Entry<String,Double> conversion : r.getConversions().entrySet()) {
             JsonObject conv = new JsonObject();
@@ -121,5 +123,13 @@ public class JsonHandler {
 
     public String getName() {
         return root.get("name").getAsString();
+    }
+
+    public Double getQty() {
+        return root.get("qty").getAsDouble();
+    }
+
+    public String getConversion() {
+        return root.get("conversion").getAsString();
     }
 }
