@@ -3,6 +3,9 @@ package cblaho.foodtracker;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -32,24 +35,48 @@ public class RecipeDisplayOne extends Activity {
             TextView fqty = new TextView(this);
             fname.setText(f.getName());
             funit.setText(f.getConversion());
-            fqty.setText(f.getQty().toString());
-            tr.addView(fname);
-            tr.addView(funit);
+            fqty.setText((Integer.valueOf(f.getQty().intValue())).toString());
+            fname.setTextSize(16);
+            funit.setTextSize(16);
+            fqty.setTextSize(16);
+            fname.setPadding(0, 0, 20, 0);
+            funit.setPadding(0,0,20,0);
+            fqty.setPadding(0,0,20,0);
             tr.addView(fqty);
+            tr.addView(funit);
+            tr.addView(fname);
+            TableRow.LayoutParams p = new TableRow.LayoutParams();
+            p.rightMargin = 10;
+            tr.setLayoutParams(p);
             ingredients.addView(tr);
         }
         TextView steps = (TextView) this.findViewById(R.id.recipe_display_one_steps);
         steps.setText(recipe.getSteps());
+
+        View hBar;
+        RelativeLayout.LayoutParams hParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, getResources().getDisplayMetrics())
+        );
+
         TableLayout nutrients = (TableLayout) this.findViewById(R.id.recipe_display_one_nutrients);
         for(Map.Entry<String,Double> nutrient : recipe.getNutrients().entrySet()) {
+            hBar = new View(this.getApplicationContext());
+            hBar.setLayoutParams(hParams);
+            hBar.setBackgroundColor(getResources().getColor(R.color.primary));
             TableRow tr = new TableRow(this);
             TextView nname = new TextView(this);
             TextView nqty = new TextView(this);
             nname.setText(nutrient.getKey());
             nqty.setText(nutrient.getValue().toString());
+            nname.setTextSize(16);
+            nqty.setTextSize(16);
+            nname.setPadding(0,0,20,0);
+            nqty.setPadding(0,0,20,0);
             tr.addView(nname);
             tr.addView(nqty);
             nutrients.addView(tr);
+            nutrients.addView(hBar);
         }
     }
 }
