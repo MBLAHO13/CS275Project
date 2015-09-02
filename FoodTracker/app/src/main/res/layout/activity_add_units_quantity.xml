@@ -11,36 +11,37 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Unit:"
-        android:id="@+id/unitLabel" />
+        android:id="@+id/add_units_quantity_unit_label" />
 
     <Spinner
-        android:id="@+id/unitDropdown"
+        android:id="@+id/add_units_quantity_dropdown"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/unitLabel"/>
+        android:layout_below="@+id/add_units_quantity_unit_label"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_below="@+id/unitDropdown"
+        android:layout_below="@+id/add_units_quantity_dropdown"
         android:text="Amount Needed: "
-        android:id="@+id/amountLabel"/>
+        android:id="@+id/add_units_quantity_quantity_label"/>
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
         android:ems="10"
-        android:id="@+id/amountInput"
-        android:layout_alignBottom="@+id/amountLabel"
-        android:layout_toEndOf="@+id/amountLabel" />
+        android:id="@+id/add_units_quantity_quantity"
+        android:layout_alignBottom="@+id/add_units_quantity_quantity_label"
+        android:layout_toEndOf="@+id/add_units_quantity_quantity_label" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Another Ingredient"
+        android:text="Add Another"
         android:id="@+id/button_add_another"
+        android:textSize="20sp"
         android:onClick="onAddAnother"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
@@ -48,7 +49,9 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Finish Recipe"
+        android:text="Finish"
+        android:onClick="onDoneIngredients"
+        android:textSize="20sp"
         android:id="@+id/button_finish_recipe"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
