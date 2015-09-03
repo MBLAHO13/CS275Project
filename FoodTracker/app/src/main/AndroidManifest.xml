@@ -9,7 +9,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".FoodTracker"
+            android:name=".activities.FoodTracker"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,27 +18,27 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RecipeList"
+            android:name=".activities.RecipeList"
             android:label="@string/title_activity_recipe_list" >
         </activity>
         <activity
-            android:name=".RecipeDisplayOne"
+            android:name=".activities.RecipeDisplayOne"
             android:label="@string/title_activity_recipe_view" >
         </activity>
         <activity
-            android:name=".AddIngredient"
+            android:name=".activities.AddIngredient"
             android:label="@string/title_activity_recipe_add" >
         </activity>
         <activity
-            android:name=".SearchResults"
+            android:name=".activities.SearchResults"
             android:label="@string/title_activity_recipe_add_search_results" >
         </activity>
         <activity
-            android:name=".AddUnitsQuantity"
+            android:name=".activities.AddUnitsQuantity"
             android:label="@string/title_activity_add_units_quantity" >
         </activity>
         <activity
-            android:name=".RecipeSteps"
+            android:name=".activities.RecipeSteps"
             android:label="@string/title_activity_recipe_steps" >
         </activity>
     </application>

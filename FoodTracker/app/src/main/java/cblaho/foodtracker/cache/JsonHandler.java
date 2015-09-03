@@ -1,4 +1,4 @@
-package cblaho.foodtracker;
+package cblaho.foodtracker.cache;
 
 import android.content.Context;
 
@@ -16,8 +16,13 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import cblaho.foodtracker.data.Food;
+import cblaho.foodtracker.data.Ingredient;
+import cblaho.foodtracker.data.Recipe;
+
 /**
  * Created by maxm on 8/30/15.
+ * Handles JSON storage on the local device
  */
 public class JsonHandler {
     private Context context;
@@ -87,10 +92,13 @@ public class JsonHandler {
         try {
             fos.write((new Gson().toJson(root)).getBytes());
         } catch(IOException e) {
+            e.printStackTrace();
         } finally {
             try {
                 fos.close();
-            } catch (IOException e2) {}
+            } catch (IOException e2) {
+                e2.printStackTrace();
+            }
         }
     }
 

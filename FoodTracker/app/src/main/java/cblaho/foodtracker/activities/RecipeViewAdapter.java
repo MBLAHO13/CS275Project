@@ -1,4 +1,4 @@
-package cblaho.foodtracker;
+package cblaho.foodtracker.activities;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,8 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import cblaho.foodtracker.R;
+
 /**
  * Created by cblaho on 8/30/15.
+ * View adapter for Recipes in the main recipe list
  */
 public class RecipeViewAdapter extends ArrayAdapter<RecipePair> {
     public RecipeViewAdapter(Context context, int layoutResourceId, RecipePair[] data) {

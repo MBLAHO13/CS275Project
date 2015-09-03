@@ -1,4 +1,4 @@
-package cblaho.foodtracker;
+package cblaho.foodtracker.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,32 +9,36 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
-public class SearchResults extends Activity implements CacheListener{
+import cblaho.foodtracker.R;
+import cblaho.foodtracker.cache.Cache;
+import cblaho.foodtracker.cache.CacheListener;
+import cblaho.foodtracker.data.Food;
+import cblaho.foodtracker.data.Recipe;
+
+public class SearchResults extends Activity implements CacheListener {
     private Cache cache;
     Recipe recipe;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         cache = new Cache(this, getApplicationContext());
         setContentView(R.layout.activity_search_results);
         Intent i = getIntent();
         final Recipe recipe = i.getParcelableExtra("recipe");
-        Map<String, String> results = (HashMap) i.getSerializableExtra("results");
-        ArrayAdapter arrayAdapter;
+        Map<?, ?> results = (Map<?,?>) i.getSerializableExtra("results");
         ListView listView;
         listView = (ListView) findViewById(R.id.search_results_list_view);
         if(!results.isEmpty()) {
+            ArrayAdapter<RecipePair> arrayAdapter;
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> a, View v, int position,
                                         long id) {
                     Intent intent = new Intent(SearchResults.this, AddUnitsQuantity.class);
                     RecipePair entry = (RecipePair) a.getItemAtPosition(position);
-                    System.out.println((String) entry.getId() + (String) entry.getName());
+                    System.out.println(entry.getId() + entry.getName());
                     intent.putExtra("ingredient", cache.getIngredientById(entry.getId()));
                     intent.putExtra("recipe", recipe);
                     startActivity(intent);
@@ -42,16 +46,18 @@ public class SearchResults extends Activity implements CacheListener{
             });
 
             ArrayList<RecipePair> SearchPairs = new ArrayList<>();
-            for (Map.Entry<String, String> entry : results.entrySet()) {
-                SearchPairs.add(new RecipePair(entry.getKey(), entry.getValue()));
+            for (Map.Entry<?, ?> entry : results.entrySet()) {
+                SearchPairs.add(new RecipePair((String) entry.getKey(), (String) entry.getValue()));
             }
             RecipePair[] packedPairs = SearchPairs.toArray(new RecipePair[SearchPairs.size()]);
             arrayAdapter = new SearchResultsAdapter(this, R.layout.search_results_row, packedPairs);
+            listView.setAdapter(arrayAdapter);
         } else {
             //this shit better not happen
-            arrayAdapter = new ArrayAdapter(this,R.layout.search_results_row, R.id.search_result_name, new String[] {"No Results Found"});
+            ArrayAdapter<String> arrayAdapter;
+            arrayAdapter = new ArrayAdapter<>(this,R.layout.search_results_row, R.id.search_result_name, new String[] {"No Results Found"});
+            listView.setAdapter(arrayAdapter);
         }
-        listView.setAdapter(arrayAdapter);
     }
 
     @Override

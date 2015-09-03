@@ -1,5 +1,6 @@
-package cblaho.foodtracker;
+package cblaho.foodtracker.activities;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -12,6 +13,10 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Map;
 
+import cblaho.foodtracker.R;
+import cblaho.foodtracker.data.Recipe;
+import cblaho.foodtracker.cache.Cache;
+
 public class RecipeList extends FragmentActivity {
     private Cache cache;
 
@@ -19,13 +24,16 @@ public class RecipeList extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipe_list);
-        getActionBar().setTitle("Your Recipes");
+        ActionBar ab = getActionBar();
+        if(ab != null) {
+            ab.setTitle("Your Recipes");
+        }
         ListView listView;
         this.cache = new Cache(null, getApplicationContext());
         final Map<String, String> recipes = cache.getRecipes();
-        ArrayAdapter arrayAdapter;
         listView = (ListView) findViewById(R.id.recipeList);
         if(!recipes.isEmpty()) {
+            ArrayAdapter<RecipePair> arrayAdapter;
             listView.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> a, View v, int position,
@@ -43,11 +51,13 @@ public class RecipeList extends FragmentActivity {
             }
             RecipePair[] packedPairs = recipePairs.toArray(new RecipePair[recipePairs.size()]);
             arrayAdapter = new RecipeViewAdapter(this, R.layout.recipe_list_element, packedPairs);
+            listView.setAdapter(arrayAdapter);
         } else {
-            arrayAdapter = new ArrayAdapter(this,R.layout.recipe_list_element, R.id.recipe_list_element_name, new String[] {"No Recipes Found"});
+            ArrayAdapter<String> arrayAdapter;
+            arrayAdapter = new ArrayAdapter<>(this,R.layout.recipe_list_element, R.id.recipe_list_element_name, new String[] {"No Recipes Found"});
             //todo: make this add a new recipe
+            listView.setAdapter(arrayAdapter);
         }
-        listView.setAdapter(arrayAdapter);
     }
 
     public void startRecipeAdd(View view){

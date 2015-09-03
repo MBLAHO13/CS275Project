@@ -1,5 +1,6 @@
-package cblaho.foodtracker;
+package cblaho.foodtracker.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,12 @@ import android.widget.EditText;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import cblaho.foodtracker.R;
+import cblaho.foodtracker.cache.Cache;
+import cblaho.foodtracker.cache.CacheListener;
+import cblaho.foodtracker.data.Food;
+import cblaho.foodtracker.data.Recipe;
 
 public class AddIngredient extends Activity implements CacheListener {
     private Recipe recipe;
@@ -18,7 +25,10 @@ public class AddIngredient extends Activity implements CacheListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_ingredient);
         this.cache = new Cache(this, getApplicationContext());
-        getActionBar().setTitle("Add an Ingredient");
+        ActionBar ab = getActionBar();
+        if(ab != null) {
+            ab.setTitle("Add and Ingredient");
+        }
         Intent intent = getIntent();
         recipe = intent.getParcelableExtra("recipe");
     }

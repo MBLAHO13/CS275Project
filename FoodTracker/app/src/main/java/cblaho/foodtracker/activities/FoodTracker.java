@@ -1,4 +1,4 @@
-package cblaho.foodtracker;
+package cblaho.foodtracker.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import cblaho.foodtracker.data.Food;
+import cblaho.foodtracker.data.Ingredient;
+import cblaho.foodtracker.data.Recipe;
+import cblaho.foodtracker.cache.Cache;
 
 
 public class FoodTracker extends Activity {

@@ -1,4 +1,4 @@
-package cblaho.foodtracker;
+package cblaho.foodtracker.cache;
 
 import android.content.Context;
 
@@ -13,16 +13,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cblaho.foodtracker.data.Food;
+import cblaho.foodtracker.data.Ingredient;
+import cblaho.foodtracker.data.Recipe;
+
 /**
  * Created by maxm on 8/29/15.
+ * Cache handler for interfacing between the UI and the stored information (on the phone and in the
+ * REST-accessible database)
  */
-public class Cache {
+public class Cache implements CacheListener {
     private Context context;
     private CacheListener listener;
     private DbHandler database;
     private Map<String,String> ingredients;
     private Map<String,String> recipes;
     private Integer maxId;
+    private Ingredient restResult;
 
     public Cache(CacheListener listener, Context context) {
         System.out.println("Generating Cache");
@@ -57,11 +64,8 @@ public class Cache {
             while (line != null) {
                 System.out.println(line);
                 String vals[] = line.split(",");
-                System.out.println("vals[0]: " + vals[0]);
-                System.out.println("vals[1]: " + vals[1]);
                 r.put(vals[0], vals[1]);
                 id = Integer.parseInt(vals[0].replace("R", "").replace("r", ""));
-                System.out.println("id: " + id.toString());
                 if(id > this.maxId) {
                     this.maxId = id;
                 }
@@ -72,7 +76,9 @@ public class Cache {
         } finally {
             try {
                 fis.close();
-            } catch (IOException e) {}
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return r;
     }
@@ -92,10 +98,13 @@ public class Cache {
         try {
             fos.write((id + "," + name + "\n").getBytes());
         } catch(IOException e) {
+            e.printStackTrace();
         } finally {
             try {
                 fos.close();
-            } catch (IOException e2) {}
+            } catch (IOException e2) {
+                e2.printStackTrace();
+            }
         }
     }
 
@@ -142,20 +151,30 @@ public class Cache {
     public Ingredient getIngredientById(String id) {
         System.out.println("Getting by id: " + id);
         if(!ingredients.containsKey(id)) {
-            (new RestHandler(listener)).execute("id",id);
+            restResult = null;
+            (new RestHandler(this)).execute("id",id);
+            while(restResult == null) {
+                try {
+                    Thread.sleep(250);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return restResult;
+        } else {
+            JsonHandler json;
+            try {
+                json = new JsonHandler(id, context);
+            } catch (FileNotFoundException e) {
+                return null;
+            }
+            Ingredient res = database.getIngredientById(id);
+            Map<String,Double> conversions = json.getConversions();
+            for(String name : conversions.keySet()) {
+                res.addConversion(name, conversions.get(name));
+            }
+            return res;
         }
-        JsonHandler json;
-        try {
-            json = new JsonHandler(id, context);
-        } catch (FileNotFoundException e) {
-            return null;
-        }
-        Ingredient res = database.getIngredientById(id);
-        Map<String,Double> conversions = json.getConversions();
-        for(String name : conversions.keySet()) {
-            res.addConversion(name, conversions.get(name));
-        }
-        return res;
     }
 
     public void searchFood(String name) {
@@ -198,11 +217,23 @@ public class Cache {
         (new JsonHandler(i, context)).write();
     }
 
-    public Map<String,String> getIngredients() {
-        return ingredients;
-    }
-
     public Map<String,String> getRecipes() {
         return recipes;
+    }
+
+    @Override
+    public void onFoodFound(Food f) {
+        if(listener != null) {
+            listener.onFoodFound(f);
+        } else {
+            restResult = (Ingredient) f;
+        }
+    }
+
+    @Override
+    public void onSearchResult(Map<String, String> results) {
+        if(listener != null) {
+            listener.onSearchResult(results);
+        }
     }
 }

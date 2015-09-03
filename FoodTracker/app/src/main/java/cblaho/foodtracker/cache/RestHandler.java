@@ -1,4 +1,4 @@
-package cblaho.foodtracker;
+package cblaho.foodtracker.cache;
 
 import android.os.AsyncTask;
 
@@ -14,8 +14,11 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import cblaho.foodtracker.data.Ingredient;
+
 /**
  * Created by maxm on 8/30/15.
+ * Handles REST requests to and from the server
  */
 public class RestHandler extends AsyncTask<String,Integer,JsonObject> {
     private static final String dburl = "http://52.88.94.147:5000/rest/api/";

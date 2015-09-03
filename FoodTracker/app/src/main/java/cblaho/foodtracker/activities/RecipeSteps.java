@@ -1,10 +1,15 @@
-package cblaho.foodtracker;
+package cblaho.foodtracker.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+
+import cblaho.foodtracker.R;
+import cblaho.foodtracker.cache.Cache;
+import cblaho.foodtracker.data.Recipe;
 
 public class RecipeSteps extends Activity {
     private Recipe recipe;
@@ -15,7 +20,10 @@ public class RecipeSteps extends Activity {
         setContentView(R.layout.activity_recipe_steps);
         Intent intent = getIntent();
         recipe = intent.getParcelableExtra("recipe");
-        getActionBar().setTitle("Finish Recipe Details");
+        ActionBar ab = getActionBar();
+        if(ab != null) {
+            ab.setTitle("Finish Recipe Details");
+        }
     }
 
     public void onFinish(View view) {

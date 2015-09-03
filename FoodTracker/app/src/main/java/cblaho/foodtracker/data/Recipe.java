@@ -1,4 +1,4 @@
-package cblaho.foodtracker;
+package cblaho.foodtracker.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -10,6 +10,8 @@ import java.util.Map;
 
 /**
  * Created by mmattes on 8/29/15.
+ * Recipe composed of multiple ingredients. Most functions are compositions of ingredient components,
+ * for example, getting a nutrient is done by adding nutrient values of componenet ingredients.
  */
 public class Recipe implements Food {
     private String id;

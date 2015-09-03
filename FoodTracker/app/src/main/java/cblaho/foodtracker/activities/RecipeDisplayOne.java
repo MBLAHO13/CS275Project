@@ -1,5 +1,6 @@
-package cblaho.foodtracker;
+package cblaho.foodtracker.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,18 +13,21 @@ import android.widget.TextView;
 
 import java.util.Map;
 
-public class RecipeDisplayOne extends Activity {
-    private Cache cache;
-    private Recipe recipe;
+import cblaho.foodtracker.R;
+import cblaho.foodtracker.data.Food;
+import cblaho.foodtracker.data.Recipe;
 
+public class RecipeDisplayOne extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.cache = new Cache(null, getApplicationContext());
         setContentView(R.layout.activity_recipe_display_one);
         Intent intent = getIntent();
-        this.recipe = intent.getParcelableExtra("recipe");
-        getActionBar().setTitle(this.recipe.getName());
+        Recipe recipe = intent.getParcelableExtra("recipe");
+        ActionBar ab = getActionBar();
+        if(ab != null) {
+            ab.setTitle(recipe.getName());
+        }
         TextView name = (TextView) this.findViewById(R.id.recipe_display_one_name);
         name.setText(recipe.getName());
         TextView servings = (TextView) this.findViewById(R.id.recipe_display_one_servings);

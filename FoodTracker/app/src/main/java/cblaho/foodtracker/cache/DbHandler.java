@@ -1,4 +1,4 @@
-package cblaho.foodtracker;
+package cblaho.foodtracker.cache;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,8 +10,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.HashMap;
 import java.util.Map;
 
+import cblaho.foodtracker.data.Food;
+import cblaho.foodtracker.data.Ingredient;
+
 /**
  * Created by maxm on 8/29/15.
+ * Handler for local SQLite Nutrient Datastore
  */
 public class DbHandler {
     private static String table = "ingredients";
@@ -62,7 +66,9 @@ public class DbHandler {
         }
         try {
             database.insert(table, null, values);
-        } catch (SQLiteConstraintException e) {}
+        } catch (SQLiteConstraintException e) {
+            e.printStackTrace();
+        }
     }
 
     public Map<String,String> getIngredientList() {

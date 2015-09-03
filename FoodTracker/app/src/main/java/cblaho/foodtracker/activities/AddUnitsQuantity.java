@@ -1,5 +1,6 @@
-package cblaho.foodtracker;
+package cblaho.foodtracker.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +11,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+
+import cblaho.foodtracker.R;
+import cblaho.foodtracker.data.Food;
+import cblaho.foodtracker.data.Recipe;
 
 public class AddUnitsQuantity extends Activity implements AdapterView.OnItemSelectedListener {
     private Recipe recipe;
@@ -22,7 +27,10 @@ public class AddUnitsQuantity extends Activity implements AdapterView.OnItemSele
         Intent intent = getIntent();
         this.recipe = intent.getParcelableExtra("recipe");
         this.ingredient = intent.getParcelableExtra("ingredient");
-        getActionBar().setTitle(ingredient.getName());
+        ActionBar ab = getActionBar();
+        if(ab != null) {
+            ab.setTitle(ingredient.getName());
+        }
         Spinner spinner = (Spinner) findViewById(R.id.add_units_quantity_dropdown);
         spinner.setOnItemSelectedListener(this);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(

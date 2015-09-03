@@ -1,4 +1,4 @@
-package cblaho.foodtracker;
+package cblaho.foodtracker.data;
 
 import android.os.Parcelable;
 
@@ -6,6 +6,7 @@ import java.util.Map;
 
 /**
  * Created by maxm on 8/29/15.
+ * Common interface to be able to handle Ingredients and Recipes generically
  */
 public interface Food extends Parcelable {
     String getID();

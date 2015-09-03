@@ -1,4 +1,4 @@
-package cblaho.foodtracker;
+package cblaho.foodtracker.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -12,6 +12,8 @@ import java.util.Map;
 
 /**
  * Created by cblaho and mmattes on 8/29/15.
+ * Ingredient from the USDA Nutrient Database. This stores actual nutrition information from the
+ * SQLite Database and other data from the remote server.
  */
 public class Ingredient implements Food {
     private String id;
