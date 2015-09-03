@@ -31,13 +31,16 @@ public class RestHandler extends AsyncTask<String,Integer,JsonObject> {
     @Override
     protected JsonObject doInBackground(String... params) {
         HttpURLConnection request = null;
+        System.out.println("Making REST Request");
         try {
             URL url = new URL(dburl + params[0] + "/");
             request = (HttpURLConnection) url.openConnection();
             request.setRequestProperty("request-value", params[1]);
             request.connect();
+            System.out.println("Connected");
             JsonParser jp = new JsonParser();
             JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+            System.out.println("Got JSON");
             return root.getAsJsonObject();
         } catch(IOException e) {
             System.out.println("Failed to connect to the internet somehow");
@@ -53,6 +56,7 @@ public class RestHandler extends AsyncTask<String,Integer,JsonObject> {
     @Override
     protected void onPostExecute(JsonObject root) {
         if(root.get("response").getAsString().equals("search")) {
+            System.out.println("Calling onSearchResult");
             // format search results
             Map<String,String> search = new HashMap<>();
             for(JsonElement e : root.get("result").getAsJsonArray()) {
@@ -63,6 +67,7 @@ public class RestHandler extends AsyncTask<String,Integer,JsonObject> {
             }
             listener.onSearchResult(search);
         } else {
+            System.out.println("Calling onFoodFound");
             listener.onFoodFound(new Ingredient(root));
         }
     }

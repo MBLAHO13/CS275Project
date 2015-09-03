@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import cblaho.foodtracker.data.Food;
 import cblaho.foodtracker.data.Ingredient;
@@ -151,16 +152,12 @@ public class Cache implements CacheListener {
     public Ingredient getIngredientById(String id) {
         System.out.println("Getting by id: " + id);
         if(!ingredients.containsKey(id)) {
-            restResult = null;
-            (new RestHandler(this)).execute("id",id);
-            while(restResult == null) {
-                try {
-                    Thread.sleep(250);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            try {
+                return new Ingredient((new RestHandler(this)).execute("id",id).get());
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
             }
-            return restResult;
+            return null;
         } else {
             JsonHandler json;
             try {
@@ -226,6 +223,7 @@ public class Cache implements CacheListener {
         if(listener != null) {
             listener.onFoodFound(f);
         } else {
+            System.out.println("Assigning result");
             restResult = (Ingredient) f;
         }
     }

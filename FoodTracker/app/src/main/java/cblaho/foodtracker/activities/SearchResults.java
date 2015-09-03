@@ -13,17 +13,15 @@ import java.util.Map;
 
 import cblaho.foodtracker.R;
 import cblaho.foodtracker.cache.Cache;
-import cblaho.foodtracker.cache.CacheListener;
-import cblaho.foodtracker.data.Food;
 import cblaho.foodtracker.data.Recipe;
 
-public class SearchResults extends Activity implements CacheListener {
+public class SearchResults extends Activity {
     private Cache cache;
     Recipe recipe;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        cache = new Cache(this, getApplicationContext());
+        cache = new Cache(null, getApplicationContext());
         setContentView(R.layout.activity_search_results);
         Intent i = getIntent();
         final Recipe recipe = i.getParcelableExtra("recipe");
@@ -59,15 +57,4 @@ public class SearchResults extends Activity implements CacheListener {
             listView.setAdapter(arrayAdapter);
         }
     }
-
-    @Override
-    public void onFoodFound(Food f) {
-        Intent intent = new Intent(SearchResults.this, AddUnitsQuantity.class);
-        intent.putExtra("recipe", this.recipe);
-        intent.putExtra("ingredient", f);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onSearchResult(Map<String, String> results) {}
 }
