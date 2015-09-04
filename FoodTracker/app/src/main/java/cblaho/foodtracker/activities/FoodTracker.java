@@ -14,7 +14,9 @@ import cblaho.foodtracker.data.Ingredient;
 import cblaho.foodtracker.data.Recipe;
 import cblaho.foodtracker.cache.Cache;
 
-
+/**
+ * Dummy class to start the main list activity.
+ */
 public class FoodTracker extends Activity {
 
     @Override
@@ -80,11 +82,17 @@ public class FoodTracker extends Activity {
         startListActivity();
     }
 
+    /**
+     * Starts the list activity.
+     */
     public void startListActivity(){
         Intent intent = new Intent(this, RecipeList.class);
         startActivity(intent);
     }
 
+    /**
+     * Exits the app on resume so the app exits on backbutton press.
+     */
     @Override
     protected void onResume(){
         super.onResume();
