@@ -20,6 +20,10 @@ public class AddUnitsQuantity extends Activity implements AdapterView.OnItemSele
     private Recipe recipe;
     private Food ingredient;
 
+    /**
+     * Sets the dropdown menu to the available units. Unpacks the recipe and ingredient.
+     * @param savedInstanceState Android OS generated
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,11 +46,19 @@ public class AddUnitsQuantity extends Activity implements AdapterView.OnItemSele
         spinner.setAdapter(adapter);
     }
 
+    /**
+     * Adds an ingredient to a recipe, along with the quantity. Called by both onClick handlers.
+     */
     private void addIngredientToRecipe() {
         ingredient.setQty(Double.parseDouble(((EditText) findViewById(R.id.add_units_quantity_quantity)).getText().toString()));
         recipe.addIngredient(ingredient);
     }
 
+    /**
+     * Onclick handler for the "Done" button on the addUnitsQuantity layout.
+     * Adds and ingredient and starts the Recipe Steps activity.
+     * @param view Android OS generated
+     */
     public void onDoneIngredients(View view) {
         addIngredientToRecipe();
         Intent intent = new Intent(AddUnitsQuantity.this, RecipeSteps.class);
@@ -54,6 +66,11 @@ public class AddUnitsQuantity extends Activity implements AdapterView.OnItemSele
         startActivity(intent);
     }
 
+    /**
+     * Onclick handler for the "Add Another" button on the addUnitsQuantity layout.
+     * Adds and ingredient and restarts the AddIngredient activity.
+     * @param view Android OS generated
+     */
     public void onAddAnother(View view) {
         addIngredientToRecipe();
         Intent intent = new Intent(AddUnitsQuantity.this, AddIngredient.class);
@@ -61,11 +78,22 @@ public class AddUnitsQuantity extends Activity implements AdapterView.OnItemSele
         startActivity(intent);
     }
 
+    /**
+     * Onclick handler for the spinner. Sets the conversion on the ingredient.
+     * @param parent Android OS generated
+     * @param view Android OS generated
+     * @param position position of item clicked
+     * @param id Android OS generated
+     */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         this.ingredient.setConversion((String) parent.getItemAtPosition(position));
     }
 
+    /**
+     * Handler for none selected. Sets the Conversion to null.
+     * @param parent Android OS generated
+     */
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         this.ingredient.setConversion(null);
