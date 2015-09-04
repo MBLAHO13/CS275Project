@@ -6,11 +6,20 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="cblaho.foodtracker.activities.RecipeDisplayOne">
 
+    <Button
+        android:id="@+id/backbutton"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:text="Back to Recipe List"
+        android:onClick="backToList"
+        />
+
     <TextView android:text="Recipe Name" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/recipe_display_one_name"
         android:textAllCaps="true"
-        android:textSize="40sp"/>
+        android:textSize="40sp"
+        android:layout_below="@id/backbutton"/>
     <View
         android:id="@+id/recipe_display_one_name_hbar"
         android:layout_below="@+id/recipe_display_one_name"
@@ -55,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ingredients:"
-                android:textSize="20sp"
+                android:textSize="50sp"
                 android:layout_below="@+id/recipe_display_one_servings_hbar"/>
 
             <TableLayout

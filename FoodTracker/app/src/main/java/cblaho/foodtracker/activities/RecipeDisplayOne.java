@@ -84,4 +84,9 @@ public class RecipeDisplayOne extends Activity {
             nutrients.addView(hBar);
         }
     }
+    public void backToList(View v){
+        Intent intent = new Intent(RecipeDisplayOne.this, RecipeList.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
 }
