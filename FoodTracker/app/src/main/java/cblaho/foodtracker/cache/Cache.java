@@ -57,6 +57,8 @@ public class Cache implements CacheListener {
      * @return Map from ids to names of all created recipes
      */
     private Map<String,String> getRecipeList() {
+        // Since the Recipes aren't stored in the database, this CSV is used to identify the
+        // complete list of recipes and IDs.
         Map<String,String> r = new HashMap<>();
         FileInputStream fis;
         try {
@@ -151,6 +153,7 @@ public class Cache implements CacheListener {
      */
     public Recipe getRecipeById(String id) {
         System.out.println("Getting by id: " + id);
+        // 1. Retrieve Recipe JSON file
         JsonHandler json;
         try {
             json = new JsonHandler(id, context);
@@ -158,13 +161,16 @@ public class Cache implements CacheListener {
             return null;
         }
         List<Food> ingredients = new ArrayList<>();
+        // 2. Retrieve ingredients from JSON
         Map<String,JsonIngredientQty> jsonIngredients = json.getIngredients();
         for(String ingredientId : jsonIngredients.keySet()) {
+            // 3. For each ingredient, load that Food object as well and store it in the Recipe
             Food f = getFoodById(ingredientId);
             f.setQty(jsonIngredients.get(ingredientId).getQty());
             f.setConversion(jsonIngredients.get(ingredientId).getUnit());
             ingredients.add(f);
         }
+        // 4. Construct the class out of the list of ingredients and JSON data
         return new Recipe(
                 id,
                 json.getName(),
@@ -184,25 +190,31 @@ public class Cache implements CacheListener {
      */
     public Ingredient getIngredientById(String id) {
         System.out.println("Getting by id: " + id);
+        // 1. Check if the ingredient is stored locally
         if(!ingredients.containsKey(id)) {
             try {
+                // 2. if it's not stored locally, retrieve it from the database
                 return new Ingredient((new RestHandler(this)).execute("id",id).get());
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
             return null;
         } else {
+            // 2. If it is stored locally, get the JSON document
             JsonHandler json;
             try {
                 json = new JsonHandler(id, context);
             } catch (FileNotFoundException e) {
                 return null;
             }
+            // 3. Retrieve nutrients and basic information from the database
             Ingredient res = database.getIngredientById(id);
+            // 4. Retrieve conversions from the JSON
             Map<String,Double> conversions = json.getConversions();
             for(String name : conversions.keySet()) {
                 res.addConversion(name, conversions.get(name));
             }
+            // 5. Construct ingredient out of information
             return res;
         }
     }
@@ -213,18 +225,22 @@ public class Cache implements CacheListener {
      * @param name Name of the food to search for
      */
     public void searchFood(String name) {
+        // 1. If the name matches a known recipe, return that
         if(recipes.containsValue(name)) {
             for(String id : recipes.keySet()) {
                 if(recipes.get(id).equals(name)) {
                     listener.onFoodFound(getRecipeById(id));
                 }
             }
+        // 2. If the name matches a known ingredient, return that
         } else if(ingredients.containsValue(name)) {
             for(String id : ingredients.keySet()) {
                 if(ingredients.get(id).equals(name)) {
                     listener.onFoodFound(getFoodById(id));
                 }
             }
+        // 3. Can't identify the name, send the name to the REST service to retrieve from remote
+        // database or search the USDA NDB
         } else {
             (new RestHandler(listener)).execute("name",name);
         }
