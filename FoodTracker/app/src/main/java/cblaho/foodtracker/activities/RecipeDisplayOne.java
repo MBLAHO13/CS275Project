@@ -100,7 +100,7 @@ public class RecipeDisplayOne extends Activity {
      */
     public void backToList(View v){
         Intent intent = new Intent(RecipeDisplayOne.this, RecipeList.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //don't add this to the activity stack
         startActivity(intent);
     }
 }
