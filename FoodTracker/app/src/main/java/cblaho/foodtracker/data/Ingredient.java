@@ -50,6 +50,8 @@ public class Ingredient implements Food {
     public Ingredient(JsonObject response){
         // at this point we've already packaged the JSON reponse into a GSON-comaptible object.
         //this method takes a json object, and returns a full ingredient object
+        this.conversions = new HashMap<>();
+        this.nutrients = new HashMap<>();
         JsonArray jsonConversions = response.getAsJsonArray("conversions");
         for(JsonElement c : jsonConversions){
             JsonObject jsonConversion = c.getAsJsonObject();
@@ -62,13 +64,20 @@ public class Ingredient implements Food {
         this.group = response.get("group_name").getAsString();
         this.id = response.get("id").getAsString();
         this.quantity = 0.0;
-        JsonArray jsonNutrients = response.getAsJsonObject("nutrients").getAsJsonArray();
+        JsonArray jsonNutrients = response.get("nutrients").getAsJsonArray();
         for(JsonElement n : jsonNutrients) {
             JsonObject jsonNutrient = n.getAsJsonObject();
-            nutrients.put(
-                    jsonNutrient.get("name").getAsString(),
-                    jsonNutrient.get("val").getAsDouble()
-            );
+            try {
+                nutrients.put(
+                        jsonNutrient.get("name").getAsString(),
+                        jsonNutrient.get("value").getAsDouble()
+                );
+            } catch (NumberFormatException e) {
+                nutrients.put(
+                        jsonNutrient.get("name").getAsString(),
+                        0.0
+                );
+            }
         }
         this.conversion = null;
     }
@@ -96,9 +105,9 @@ public class Ingredient implements Food {
     @Override
     public Double getNutrient(String name) {
         if(this.conversion == null) {
-            return nutrients.get(name)*quantity;
+            return nutrients.containsKey(name) ? nutrients.get(name)*quantity : 0.0;
         } else {
-            return nutrients.get(name)*quantity*conversions.get(conversion);
+            return nutrients.containsKey(name) ? nutrients.get(name)*quantity*conversions.get(conversion) : 0.0;
         }
     }
 
