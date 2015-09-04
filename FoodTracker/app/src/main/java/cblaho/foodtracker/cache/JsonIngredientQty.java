@@ -1,7 +1,8 @@
-package cblaho.foodtracker;
+package cblaho.foodtracker.cache;
 
 /**
  * Created by maxm on 8/30/15.
+ * Storage class for ingredient quantities from JSON handler
  */
 public class JsonIngredientQty {
     public String unit;

@@ -1,4 +1,7 @@
-package cblaho.foodtracker;
+package cblaho.foodtracker.data;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +10,8 @@ import java.util.Map;
 
 /**
  * Created by mmattes on 8/29/15.
+ * Recipe composed of multiple ingredients. Most functions are compositions of ingredient components,
+ * for example, getting a nutrient is done by adding nutrient values of componenet ingredients.
  */
 public class Recipe implements Food {
     private String id;
@@ -16,16 +21,6 @@ public class Recipe implements Food {
     private String steps;
     private List<Food> ingredients;
     private Map<String,Double> conversions;
-
-    public Recipe(String id, String name, String steps, Map<String,Double> conversions, List<Food> ingredients) {
-        this.id = id;
-        this.qty = 1.0;
-        this.name = name.replace(",","");
-        this.steps = steps;
-        this.conversions = conversions;
-        this.conversion = null;
-        this.ingredients = ingredients;
-    }
 
     public Recipe(String id) {
         this.id = id;
@@ -40,7 +35,10 @@ public class Recipe implements Food {
     public Recipe(String id, String name, Double qty, List<Food> ingredients, Map<String,Double> conversions, String conversion, String steps) {
         this.id = id;
         this.qty = qty;
-        this.name = name.replace(",","");
+        this.name = name;
+        if(this.name != null) {
+            this.name = this.name.replace(",","");
+        }
         this.steps = steps;
         this.conversions = conversions;
         this.conversion = conversion;
@@ -107,6 +105,19 @@ public class Recipe implements Food {
     }
 
     @Override
+    public Double getGrams() {
+        Double grams = 0.0;
+        for(Food f : ingredients) {
+            grams += f.getGrams();
+        }
+        if(conversion == null) {
+            return grams*qty;
+        } else {
+            return grams*qty*conversions.get(conversion);
+        }
+    }
+
+    @Override
     public void setQty(Double qty) {
         this.qty = qty;
     }
@@ -126,8 +137,49 @@ public class Recipe implements Food {
         conversion = name;
     }
 
+    public void setSteps(String steps) {
+        this.steps = steps;
+    }
+
     @Override
     public void addConversion(String name, Double grams) {
         conversions.put(name, grams);
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeDouble(qty);
+        dest.writeList(ingredients);
+        dest.writeMap(conversions);
+        dest.writeString(conversion);
+        dest.writeString(steps);
+    }
+
+    public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
+        @Override
+        public Recipe createFromParcel(Parcel source) {
+            List<Food> ingredients = new ArrayList<>();
+            Map<String,Double> conversions = new HashMap<>();
+            String id = source.readString();
+            String name = source.readString();
+            Double qty = source.readDouble();
+            source.readList(ingredients, Ingredient.class.getClassLoader());
+            source.readMap(conversions, null);
+            String conversion = source.readString();
+            String steps = source.readString();
+            return new Recipe(id,name,qty,ingredients,conversions,conversion,steps);
+        }
+
+        @Override
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+    };
 }

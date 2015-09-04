@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="cblaho.foodtracker.activities.AddUnitsQuantity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Unit:"
+        android:id="@+id/add_units_quantity_unit_label" />
+
+    <Spinner
+        android:id="@+id/add_units_quantity_dropdown"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_units_quantity_unit_label"/>
+
+    <Space
+        android:layout_width="50px"
+        android:layout_height="50px"
+        android:layout_above="@+id/add_units_quantity_quantity_label"
+        android:layout_alignParentStart="true" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_below="@+id/add_units_quantity_dropdown"
+        android:text="Amount Needed: "
+        android:id="@+id/add_units_quantity_quantity_label"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/add_units_quantity_quantity"
+        android:layout_alignBottom="@+id/add_units_quantity_quantity_label"
+        android:layout_toEndOf="@+id/add_units_quantity_quantity_label" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Another"
+        android:id="@+id/button_add_another"
+        android:textSize="20sp"
+        android:onClick="onAddAnother"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finish"
+        android:onClick="onDoneIngredients"
+        android:textSize="20sp"
+        android:id="@+id/button_finish_recipe"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+
+
+
+</RelativeLayout>
