@@ -28,6 +28,13 @@ public class JsonHandler {
     private Context context;
     private String filename;
     private JsonObject root;
+
+    /**
+     * Instantiate the JsonHandler with a Food object ID
+     * @param id Food object to retrieve
+     * @param context Current activity context
+     * @throws FileNotFoundException if the ingredient is not stored on the local device
+     */
     public JsonHandler(String id, Context context) throws FileNotFoundException {
         this.filename = id + ".json";
         this.context = context;
@@ -36,6 +43,11 @@ public class JsonHandler {
         this.root = (new JsonParser()).parse(reader).getAsJsonObject();
     }
 
+    /**
+     * Instantiate the JsonHandler with a Recipe Object
+     * @param r Recipe to store
+     * @param context Current activity context
+     */
     public JsonHandler(Recipe r, Context context) {
         this.context = context;
         this.filename = r.getID() + ".json";
@@ -63,6 +75,11 @@ public class JsonHandler {
         this.root.add("ingredients", ingredients);
     }
 
+    /**
+     * Instantiate the JsonHandler with an Ingredient object
+     * @param i Ingredient to store
+     * @param context Current activity context
+     */
     public JsonHandler(Ingredient i, Context context) {
         this.context = context;
         this.filename = i.getID() + ".json";
@@ -78,16 +95,15 @@ public class JsonHandler {
         this.root.add("conversions", conversions);
     }
 
+    /**
+     * Writes the JsonHandler's object to the local data store.
+     */
     public void write() {
         FileOutputStream fos;
         try {
-            fos = context.openFileOutput(filename, Context.MODE_APPEND);
+            fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
         } catch(FileNotFoundException e) {
-            try {
-                fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
-            } catch(FileNotFoundException e2) {
-                return;
-            }
+            return;
         }
         try {
             fos.write((new Gson().toJson(root)).getBytes());
@@ -102,7 +118,10 @@ public class JsonHandler {
         }
     }
 
-    // Ingredient Methods
+    /**
+     * Gets the conversion map from the JSON store
+     * @return Map of conversion names to amounts in grams.
+     */
     public Map<String,Double> getConversions() {
         HashMap<String,Double> conversions = new HashMap<>();
         for(JsonElement e : root.get("conversions").getAsJsonArray()) {
@@ -112,7 +131,10 @@ public class JsonHandler {
         return conversions;
     }
 
-    // Recipe Methods
+    /**
+     * Gets the ingredient list from the JSON store
+     * @return Map of ingredient IDs to JsonIngredientQtys (which store the unit and quantity)
+     */
     public Map<String, JsonIngredientQty> getIngredients() {
         Map<String,JsonIngredientQty> ingredients = new HashMap<>();
         for(JsonElement e : root.get("ingredients").getAsJsonArray()) {
@@ -126,18 +148,34 @@ public class JsonHandler {
         return ingredients;
     }
 
+    /**
+     * Gets the steps item from the JSON storage
+     * @return Steps for the recipe
+     */
     public String getSteps() {
         return root.get("steps").getAsString();
     }
 
+    /**
+     * Gets the Food name from the JSON storage
+     * @return Name of the food item
+     */
     public String getName() {
         return root.get("name").getAsString();
     }
 
+    /**
+     * Gets the quantity of the item in storage
+     * @return Quantity (based on conversion)
+     */
     public Double getQty() {
         return root.get("qty").getAsDouble();
     }
 
+    /**
+     * Gets the conversion of the item in storage
+     * @return Conversion type
+     */
     public String getConversion() {
         return root.get("conversion").getAsString();
     }

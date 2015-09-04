@@ -23,11 +23,21 @@ import cblaho.foodtracker.data.Ingredient;
 public class RestHandler extends AsyncTask<String,Integer,JsonObject> {
     private static final String dburl = "http://52.88.94.147:5000/rest/api/";
     private CacheListener listener;
+
+    /**
+     * Instantiate the RestHandler
+     * @param listener listener to send REST results to
+     */
     public RestHandler(CacheListener listener) {
         super();
         this.listener = listener;
     }
 
+    /**
+     * Contact the server and send the request for either ID or Name search, then return the JSON response
+     * @param params "id" or "name" followed by the id or name to search for
+     * @return JSON response from the server
+     */
     @Override
     protected JsonObject doInBackground(String... params) {
         HttpURLConnection request = null;
@@ -53,6 +63,10 @@ public class RestHandler extends AsyncTask<String,Integer,JsonObject> {
         }
     }
 
+    /**
+     * Calls the appropriate listener function based on the JSON response
+     * @param root JSON response from the server
+     */
     @Override
     protected void onPostExecute(JsonObject root) {
         if(root.get("response").getAsString().equals("search")) {

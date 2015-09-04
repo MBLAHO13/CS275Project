@@ -30,8 +30,12 @@ public class Cache implements CacheListener {
     private Map<String,String> ingredients;
     private Map<String,String> recipes;
     private Integer maxId;
-    private Ingredient restResult;
 
+    /**
+     * Initializes the Cache and loads all resources
+     * @param listener Listener for outside requests
+     * @param context Activity context
+     */
     public Cache(CacheListener listener, Context context) {
         System.out.println("Generating Cache");
         this.context = context;
@@ -48,6 +52,10 @@ public class Cache implements CacheListener {
         }
     }
 
+    /**
+     * Retrieves the recipe list from the local store
+     * @return Map from ids to names of all created recipes
+     */
     private Map<String,String> getRecipeList() {
         Map<String,String> r = new HashMap<>();
         FileInputStream fis;
@@ -84,6 +92,11 @@ public class Cache implements CacheListener {
         return r;
     }
 
+    /**
+     * Adds recipe to the list on the local store
+     * @param id Recipe id
+     * @param name Recipe name
+     */
     private void addToRecipeList(String id, String name) {
         this.recipes.put(id, name);
         FileOutputStream fos;
@@ -109,11 +122,20 @@ public class Cache implements CacheListener {
         }
     }
 
+    /**
+     * Generates the next recipe ID and returns it.
+     * @return The next available recipe ID.
+     */
     public String getNextRecipeId() {
         maxId++;
         return "R" + maxId.toString();
     }
 
+    /**
+     * Retrieves the food item using an ID
+     * @param id food ID
+     * @return Food matching the given ID
+     */
     public Food getFoodById(String id) {
         if(id.startsWith("R") || id.startsWith("r")) {
             return getRecipeById(id);
@@ -122,6 +144,11 @@ public class Cache implements CacheListener {
         }
     }
 
+    /**
+     * Returns the recipe using an ID
+     * @param id Recipe ID
+     * @return Recipe matching the given ID (or null if none found)
+     */
     public Recipe getRecipeById(String id) {
         System.out.println("Getting by id: " + id);
         JsonHandler json;
@@ -149,6 +176,12 @@ public class Cache implements CacheListener {
         );
     }
 
+    /**
+     * Returns the Ingredient using an ID. May possible make a REST request to retrieve the data
+     * from the remote store.
+     * @param id Ingredient ID
+     * @return Ingredient matching the given ID (or null if none found).
+     */
     public Ingredient getIngredientById(String id) {
         System.out.println("Getting by id: " + id);
         if(!ingredients.containsKey(id)) {
@@ -174,6 +207,11 @@ public class Cache implements CacheListener {
         }
     }
 
+    /**
+     * Searches for a Food by name and returns the result to the listener by calling onFoodFound
+     * or onSearchResult
+     * @param name Name of the food to search for
+     */
     public void searchFood(String name) {
         if(recipes.containsValue(name)) {
             for(String id : recipes.keySet()) {
@@ -192,6 +230,10 @@ public class Cache implements CacheListener {
         }
     }
 
+    /**
+     * Save the recipe and all component ingredients to the local cache for re-use
+     * @param r Recipe object to save.
+     */
     public void save(Recipe r) {
         System.out.println("Saving " + r.getName());
         for(Food i : r.getIngredients()) {
@@ -207,6 +249,10 @@ public class Cache implements CacheListener {
         }
     }
 
+    /**
+     * Save the ingredient to the local cache for re-use
+     * @param i Ingredient object to save
+     */
     public void save(Ingredient i) {
         System.out.println("Saving " + i.getName());
         ingredients.put(i.getID(), i.getName());
@@ -214,20 +260,29 @@ public class Cache implements CacheListener {
         (new JsonHandler(i, context)).write();
     }
 
+    /**
+     * Gets the list of recipes created by the user
+     * @return Map of IDs to names
+     */
     public Map<String,String> getRecipes() {
         return recipes;
     }
 
+    /**
+     * Probably unused, disregard
+     * @param f Food found by searching
+     */
     @Override
     public void onFoodFound(Food f) {
         if(listener != null) {
             listener.onFoodFound(f);
-        } else {
-            System.out.println("Assigning result");
-            restResult = (Ingredient) f;
         }
     }
 
+    /**
+     * Probably unused, disregard
+     * @param results Search result mapping of IDs to Names
+     */
     @Override
     public void onSearchResult(Map<String, String> results) {
         if(listener != null) {

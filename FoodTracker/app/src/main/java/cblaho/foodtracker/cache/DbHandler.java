@@ -21,12 +21,21 @@ public class DbHandler {
     private static String table = "ingredients";
     private SQLiteDatabase database;
 
+    /**
+     * Creates a new DbHandler with the activity context
+     * @param context Current activity context
+     */
     public DbHandler(Context context) {
         System.out.println("Connecting to Database");
         database = (new DbHelper(context)).getWritableDatabase();
         System.out.println("Connected Successfully");
     }
 
+    /**
+     * Returns ingredient's nutrient information
+     * @param id Ingredient ID
+     * @return Ingredient object instantiated with the name, id, and nutrients but missing conversions
+     */
     public Ingredient getIngredientById(String id) {
         Cursor c = database.query(table, null, "id=?", new String[] {id}, null, null, null, null);
         if(c != null) {
@@ -56,6 +65,10 @@ public class DbHandler {
         }
     }
 
+    /**
+     * Saves the Food in the database for later use
+     * @param f Food object to save
+     */
     public void save(Food f) {
         ContentValues values = new ContentValues();
         values.put("id", f.getID());
@@ -71,6 +84,10 @@ public class DbHandler {
         }
     }
 
+    /**
+     * Gets the list of ingredients in the database
+     * @return Map of IDs to Names
+     */
     public Map<String,String> getIngredientList() {
         System.out.println("Getting Ingredient list");
         Cursor c = database.query(table, new String[] {"id","name"}, null, null, null, null, null);
@@ -87,11 +104,22 @@ public class DbHandler {
         return idmap;
     }
 
+    /**
+     * Handles SQLite instantiation and database creation on the local device
+     */
     private class DbHelper extends SQLiteOpenHelper {
+        /**
+         * Instantiate the DbHelper
+         * @param context Current Activity context
+         */
         public DbHelper(Context context) {
             super(context, table, null, 1);
         }
 
+        /**
+         * Creation of the new database on a device not already containing one.
+         * @param db Database object
+         */
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL("CREATE TABLE ingredients(" +
